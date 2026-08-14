@@ -1,0 +1,31 @@
+name: Update Dashboards
+
+on:
+  schedule:
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install pandas openpyxl google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client
+      - name: Atualizar dashboards
+        env:
+          GMAIL_CLIENT_ID: ${{ secrets.GMAIL_CLIENT_ID }}
+          GMAIL_CLIENT_SECRET: ${{ secrets.GMAIL_CLIENT_SECRET }}
+          GMAIL_REFRESH_TOKEN: ${{ secrets.GMAIL_REFRESH_TOKEN }}
+        run: python3 update_dashboards.py
+      - name: Commit e push
+        run: |
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "GitHub Actions"
+          git add bibiana.html diogo.html julia.html kellen.html rafael.html vitoria.html
+          git diff --staged --quiet || git commit -m "auto: dashboards $(date -u '+%Y-%m-%d')"
+          git push
