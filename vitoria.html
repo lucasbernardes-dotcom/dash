@@ -433,57 +433,6 @@ prodTabSearch.addEventListener('input',runProdTabSearch);
 prodTabClear.addEventListener('click',()=>{prodTabSearch.value='';runProdTabSearch();prodTabSearch.focus();});
 // ── fim aba produtos ──────────────────────────────────────
 
-</script>
-<div id="lockScreen" style="position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px">
-  <div style="background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:32px;max-width:320px;width:100%;box-shadow:var(--sh)">
-    <div style="text-align:center;font-size:32px;margin-bottom:16px">🔒</div>
-    <div style="font-size:18px;font-weight:700;text-align:center;color:var(--text);margin-bottom:6px">Dashboard Agrotimbo</div>
-    <div style="font-size:13px;color:var(--text-2);text-align:center;margin-bottom:24px">Digite a senha para acessar</div>
-    <input id="lockInput" type="password" placeholder="Senha" autocomplete="current-password" style="width:100%;background:var(--surf-2);border:1.5px solid var(--border);border-radius:var(--r-sm);color:var(--text);font-size:15px;padding:12px;outline:none;font-family:inherit;margin-bottom:8px;box-sizing:border-box">
-    <div id="lockErr" style="color:var(--danger);font-size:12px;text-align:center;margin-bottom:8px;display:none">Senha incorreta</div>
-    <button onclick="checkPwd()" style="width:100%;background:var(--accent);border:none;border-radius:var(--r-sm);color:#000;font-size:15px;font-weight:700;padding:12px;cursor:pointer;font-family:inherit">Entrar</button>
-  </div>
-</div>
-<script>
-function checkPwd(){
-  const v=document.getElementById('lockInput').value;
-  if(btoa(v)==='MzM4Mg=='){
-    sessionStorage.setItem('dash_auth','1');
-    document.getElementById('lockScreen').style.display='none';
-  } else {
-    document.getElementById('lockErr').style.display='block';
-    document.getElementById('lockInput').value='';
-    document.getElementById('lockInput').focus();
-  }
-}
-document.getElementById('lockInput').addEventListener('keydown',e=>{if(e.key==='Enter')checkPwd();});
-if(sessionStorage.getItem('dash_auth')==='1')document.getElementById('lockScreen').style.display='none';
-</script>
-</body></html>
-
-<div id="lockScreen" style="position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px">
-  <div style="background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:32px;max-width:320px;width:100%;box-shadow:var(--sh)">
-    <div style="text-align:center;font-size:32px;margin-bottom:16px">🔒</div>
-    <div style="font-size:18px;font-weight:700;text-align:center;color:var(--text);margin-bottom:6px">Dashboard Agrotimbo</div>
-    <div style="font-size:13px;color:var(--text-2);text-align:center;margin-bottom:24px">Digite a senha para acessar</div>
-    <input id="lockInput" type="password" placeholder="Senha" autocomplete="current-password" style="width:100%;background:var(--surf-2);border:1.5px solid var(--border);border-radius:var(--r-sm);color:var(--text);font-size:15px;padding:12px;outline:none;font-family:inherit;margin-bottom:8px;box-sizing:border-box">
-    <div id="lockErr" style="color:var(--danger);font-size:12px;text-align:center;margin-bottom:8px;display:none">Senha incorreta</div>
-    <button onclick="checkPwd()" style="width:100%;background:var(--accent);border:none;border-radius:var(--r-sm);color:#000;font-size:15px;font-weight:700;padding:12px;cursor:pointer;font-family:inherit">Entrar</button>
-  </div>
-</div>
-<script>
-function checkPwd(){
-  const v=document.getElementById('lockInput').value;
-  if(btoa(v)==='MzM4Mg=='){
-    sessionStorage.setItem('dash_auth','1');
-    document.getElementById('lockScreen').style.display='none';
-  } else {
-    document.getElementById('lockErr').style.display='block';
-    document.getElementById('lockInput').value='';
-    document.getElementById('lockInput').focus();
-  }
-}
-document.getElementById('lockInput').addEventListener('keydown',e=>{if(e.key==='Enter')checkPwd();});
-if(sessionStorage.getItem('dash_auth')==='1')document.getElementById('lockScreen').style.display='none';
-</script>
+</script></body></html>
+<div id="lockScreen" style="position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div style="background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:32px;max-width:320px;width:100%;box-shadow:var(--sh)"><div style="text-align:center;font-size:32px;margin-bottom:16px">🔒</div><div style="font-size:18px;font-weight:700;text-align:center;color:var(--text);margin-bottom:6px">Dashboard Agrotimbo</div><div style="font-size:13px;color:var(--text-2);text-align:center;margin-bottom:24px">Digite a senha para acessar</div><input id="lockInput" type="password" placeholder="Senha" autocomplete="current-password" style="width:100%;background:var(--surf-2);border:1.5px solid var(--border);border-radius:var(--r-sm);color:var(--text);font-size:15px;padding:12px;outline:none;font-family:inherit;margin-bottom:8px;box-sizing:border-box"><div id="lockErr" style="color:var(--danger);font-size:12px;text-align:center;margin-bottom:8px;display:none">Senha incorreta</div><button onclick="checkPwd()" style="width:100%;background:var(--accent);border:none;border-radius:var(--r-sm);color:#000;font-size:15px;font-weight:700;padding:12px;cursor:pointer;font-family:inherit">Entrar</button></div></div><script>function checkPwd(){const v=document.getElementById('lockInput').value;if(btoa(v)==='MzM4Mg=='){sessionStorage.setItem('dash_auth','1');document.getElementById('lockScreen').style.display='none';}else{document.getElementById('lockErr').style.display='block';document.getElementById('lockInput').value='';document.getElementById('lockInput').focus();}}document.getElementById('lockInput').addEventListener('keydown',e=>{if(e.key==='Enter')checkPwd();});if(sessionStorage.getItem('dash_auth')==='1')document.getElementById('lockScreen').style.display='none';</script>
 </body></html>
