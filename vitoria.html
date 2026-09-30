@@ -55,6 +55,8 @@ const CONFIG = {
     totalRCAs: 6,
     rankingFamilias: {"Bravecto": 3, "Nobivac": 3, "Defenza": 4, "Farma": 5, "IDEXX": 6},
     gamificacao: {"meses": ["2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07", "2026-08", "2026-09"], "medidas": [{"k": "base", "nome": "Aproveitamento da base", "desc": "clientes da carteira que compraram no mês"}, {"k": "mix", "nome": "Mix", "desc": "itens diferentes que cada cliente leva, do catálogo já vendido"}, {"k": "recuperacao", "nome": "Recuperação", "desc": "clientes parados que voltaram a comprar"}, {"k": "evolucao", "nome": "Evolução", "desc": "venda do ano até agora contra o mesmo período do ano passado"}], "reguas": {"base": [0.41, 0.46, 0.51], "mix": [0.025, 0.028, 0.031], "recuperacao": [0.13, 0.14, 0.16], "evolucao": [0.01, 0.1, 0.2]}, "catalogo": 153, "destaques": ["mix", "recuperacao"], "proxDestaques": ["base", "evolucao"], "desafio": {"medida": "base", "nome": "Aproveitamento da base da equipe", "atual": 0.4184, "alvo": 0.4663, "alvoMes": "2026-03", "serie": [0.4635, 0.4241, 0.4663, 0.4526, 0.3983, 0.4267, 0.4144, 0.4628, 0.4184], "faltam": 42}, "eu": {"base": {"atual": 0.3005, "nivel": 0, "recorde": 0.4096, "recordeMes": "2026-03", "seq": 0, "conquistas": [["2026-02", 0.3875, 0.3248], ["2026-03", 0.4096, 0.3875]], "serie": [0.3248, 0.3875, 0.4096, 0.3526, 0.3352, 0.2457, 0.3056, 0.3777, 0.3005]}, "mix": {"atual": 0.03, "nivel": 2, "recorde": 0.0381, "recordeMes": "2026-01", "seq": 0, "conquistas": [], "serie": [0.0381, 0.0359, 0.0341, 0.03, 0.0286, 0.0288, 0.0244, 0.027, 0.03]}, "recuperacao": {"atual": 0.1154, "nivel": 0, "recorde": 0.1765, "recordeMes": "2026-03", "seq": 1, "conquistas": [["2026-03", 0.1765, 0.1556]], "serie": [0.1556, 0.1064, 0.1765, 0.1091, 0.1207, 0.0833, 0.0882, 0.1481, 0.1154]}, "evolucao": {"atual": 0.129, "nivel": 2, "recorde": 0.2883, "recordeMes": "2026-06", "seq": 1, "conquistas": [["2026-03", 0.1582, -0.0811], ["2026-04", 0.1657, 0.1582], ["2026-05", 0.2221, 0.1657], ["2026-06", 0.2883, 0.2221]], "serie": [-0.0811, -0.1731, 0.1582, 0.1657, 0.2221, 0.2883, 0.0858, 0.1615, 0.129]}}, "contas": {"base": [58, 193], "recuperacao": [9, 78], "introducao": [31, 58]}, "posicoes": {"mix": 3, "recuperacao": 5}, "totalRCAs": 6},
+    metasMes: "2026-09",
+    beta: true,
     metas: {
       total: 186000,
       msd: 179200,
@@ -135,7 +137,7 @@ nav button.on .cnt{background:var(--brand);color:var(--brand-ink)}
 .me b{display:block;font-size:13.5px}
 .me span{font-size:11.5px;color:var(--muted)}
 
-main{padding:22px 26px 36px;display:grid;gap:16px;align-content:start;max-width:1240px;width:100%}
+main{padding:22px 26px 36px;display:grid;grid-template-columns:minmax(0,1fr);gap:16px;align-content:start;max-width:1240px;width:100%}
 .head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:8px 16px}
 .hello{font-size:13px;color:var(--muted);margin-bottom:2px}
 h1{margin:0;font-size:22px;letter-spacing:-.01em;text-wrap:balance;font-weight:700}
@@ -299,6 +301,37 @@ input[type=search]:focus{outline:2px solid var(--accent);outline-offset:1px}
 .fam .fv{text-align:right;font-variant-numeric:tabular-nums;font-weight:650;font-size:13px}
 .fam .fp{text-align:right;font-variant-numeric:tabular-nums;font-size:12px;color:var(--muted)}
 .op .call{grid-template-columns:34px 1fr auto}
+/* Oportunidades: cliente aberto item por item */
+tr.exp td{background:var(--surface2)}
+tr.itens > td{padding:0 0 12px;background:var(--surface2)}
+.itbox{padding:4px 12px 0 12px}
+.itbox table{width:100%}
+.itbox th,.itbox td{font-size:12.5px}
+.itbox .un{display:block;font-size:11px;color:var(--muted)}
+.itbox .rod{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px;font-size:12px;color:var(--muted)}
+.seta{display:inline-block;width:14px;color:var(--muted);transition:transform .15s}
+tr.exp .seta{transform:rotate(90deg)}
+/* Plano do mês */
+.pl-top{display:grid;grid-template-columns:1.2fr 1fr;gap:14px}
+.pl-top>*{min-width:0}
+@media (max-width:1100px){ .pl-top{grid-template-columns:1fr} }
+.pl-big{font-size:28px;font-weight:750;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.pl-bar{position:relative;height:14px;background:var(--track);border-radius:7px;overflow:hidden;margin:10px 0 6px;display:flex}
+.pl-bar i{display:block;height:100%}
+.pl-bar i.v{background:var(--good)} .pl-bar i.p{background:var(--accent)}
+.pl-leg{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--muted)}
+.pl-leg span::before{content:"";display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:5px;vertical-align:-1px;background:var(--c)}
+input.chk{width:18px;height:18px;accent-color:var(--accent);cursor:pointer}
+tr.no-plano td{background:var(--accent-soft)}
+.aviso{border:1px solid var(--warn);background:var(--warn-bg);color:var(--ink);border-radius:12px;padding:10px 14px;font-size:13px}
+.why{font-size:11.5px;color:var(--muted)}
+.cp-bar{display:flex;height:22px;border-radius:7px;overflow:hidden;margin:4px 0 10px}
+.cp-bar i{display:block;height:100%}
+.cp-lab{font-size:12px;color:var(--muted);font-weight:600}
+.cp-l{display:grid;grid-template-columns:12px minmax(0,1fr) auto;gap:4px 8px;align-items:baseline;font-size:13px;padding:5px 0;border-top:1px solid var(--line)}
+.cp-l i{width:10px;height:10px;border-radius:3px;align-self:center}
+.cp-l .v{font-weight:700;font-variant-numeric:tabular-nums;text-align:right}
+.cp-l .d{grid-column:2 / 4;font-size:11.5px;color:var(--muted)}
 .call .v.neg{color:var(--bad)}
 @media (max-width:560px){ .fam{grid-template-columns:1fr 70px 44px} .fam .fb{grid-column:1/-1;order:5} }
 
@@ -306,6 +339,7 @@ input[type=search]:focus{outline:2px solid var(--accent);outline-offset:1px}
 .btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:var(--accent-ink);border:0;border-radius:10px;padding:9px 14px;font-weight:650;cursor:pointer;font-size:13px}
 .btn.sm{padding:4px 10px;font-size:12px;border-radius:99px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent-line)}
 .btn.sm svg{width:14px;height:14px}
+.btn.sm.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
 .btn:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 .anf{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:12px 14px;align-items:end}
 .anf .f{grid-column:span 2}
@@ -694,10 +728,10 @@ nav button.sub svg{width:15px;height:15px}
   // Para criar uma seção nova: acrescente um item aqui com id, rótulo e a função que desenha.
   const SECOES = [
     {id:"mes",       ic:"home",     rot:"Meu mês",               draw:drawMes},
+    ...(C.beta ? [{id:"plano", ic:"calendario", rot:"Plano do mês", draw:drawPlano}] : []),
     {id:"oport",     ic:"alvo",     rot:"Oportunidades",         draw:drawOport},
     {id:"clientes",  ic:"pessoas",  rot:"Clientes",              draw:drawClientes, cnt:()=>NC},
     {id:"produtos",  ic:"box",      rot:"Produtos",              draw:drawProdutos},
-    {id:"top20",     ic:"estrela",  rot:"Top 20 de "+(Number(C.mesRef.slice(0,4))-1)+"",       draw:drawTop},
     {id:"semcompra", ic:"local",    rot:"Sem compra no mês",     draw:drawSem, cnt:()=>semLista("todos").filter(isJ).length},
     {id:"analitico", ic:"tabela",   rot:"Analítico",             draw:drawAnalitico},
     {id:"conquistas",ic:"trofeu",   rot:"Conquistas",            draw:drawConquistas, cnt: novosRec>0 ? ()=>"★ "+novosRec : null},
@@ -837,7 +871,7 @@ nav button.sub svg{width:15px;height:15px}
       <div class="head">
         <div><div class="hello">${saud}, ${esc(C.vendedor.split(" ")[0])}!</div><h1>Veja como está o seu mês de ${MES_NOME[mes-1]}</h1>
         <div class="sub">${corte?`Dados até ${corte.toLocaleDateString("pt-BR")} · ${uteisPassados} de ${uteisMes} dias úteis · faltam ${uteisRestantes}`:"Data dos dados: sem dado"}</div></div>
-        ${ok(C.posicaoRanking)&&C.posicaoRanking<=3?`<div class="rankpill">${ICON.trofeu}<span class="big">${C.posicaoRanking}º</span> lugar na equipe · de ${C.totalRCAs}</div>`:""}
+        ${ok(C.posicaoRanking)&&C.posicaoRanking<=3?`<div class="rankpill">${ICON.trofeu}<span class="big">${C.posicaoRanking}º</span> lugar na equipe</div>`:""}
       </div>
       <section class="kpis">
         ${kpi("Vendido no mês","cifrao",brl0(tot.real),`${seta(varLy)} contra ${lyIdx>=0?mesCurto(P.meses[lyIdx]):"ano passado"}`,`<div class="spark">${spark(serieVenda,"sg1")}</div>`)}
@@ -903,9 +937,11 @@ nav button.sub svg{width:15px;height:15px}
         <span class="mini">Período:</span>
         <div class="seg" id="perseg">${PERIODOS.map(p=>`<button data-p="${p.id}">${p.btn}</button>`).join("")}</div>
         <select id="tri" aria-label="Escolher trimestre"><option value="">Escolher trimestre…</option>${TRIS.map(t=>`<option value="${t.id}">${t.rot}</option>`).join("")}</select>
+        <button class="btn sm" id="topbtn" aria-pressed="false">${ICON.estrela} Top 20</button>
         <span class="mini" id="perrot"></span>
       </div>
-      <div class="panel tools" style="margin:0">
+      <div id="topbox" hidden></div>
+      <div class="panel tools" style="margin:0" id="clitools">
         <span class="mini">Cliente:</span>
         <select id="clisel" aria-label="Escolher cliente"></select>
         <input type="search" id="busca" placeholder="Filtrar por nome ou código" aria-label="Filtrar clientes">
@@ -931,6 +967,12 @@ nav button.sub svg{width:15px;height:15px}
       el("clicont").textContent = nq ? `${rows.length} de ${NC}` : `${NC} clientes, do que mais comprou para o que menos comprou`;
     };
     const muda = p => { periodo = p; try{ localStorage.setItem("cli-periodo2", p.id); }catch(e){} calcula(); lista(); desenhaDetalhe(); };
+    el("topbtn").addEventListener("click", ()=>{
+      const on = el("topbox").hidden; el("topbox").hidden = !on; el("clitools").hidden = on; el("clidet").hidden = on;
+      el("topbtn").classList.toggle("on", on); el("topbtn").setAttribute("aria-pressed", on);
+      el("perseg").style.opacity = el("tri").style.opacity = on ? ".45" : "";
+      if(on) el("topbox").innerHTML = topHTML();
+    });
     el("perseg").addEventListener("click", e=>{ const b=e.target.closest("button"); if(b) muda(PERIODOS.find(p=>p.id===b.dataset.p)); });
     el("tri").addEventListener("change", e=>{ const t=TRIS.find(x=>x.id===e.target.value); if(t) muda(t); });
     el("clisel").addEventListener("change", e=>{ clienteSel = e.target.value===""?null:+e.target.value; prodFiltro = ""; desenhaDetalhe(); });
@@ -1043,15 +1085,42 @@ nav button.sub svg{width:15px;height:15px}
     }});
   })();
   let opPer = OP_PERIODOS[0], opFam, opTipo = "todos";   // opFam: undefined = nenhuma escolhida, null = geral
+  let opAberto = null;   // cliente aberto item por item na lista (só no painel de teste)
+  const un = q => ok(q) ? `${Math.round(q).toLocaleString("pt-BR")} un` : "";
+  // Itens de um cliente numa família (ou todas), período agora x mesmo período do ano anterior
+  function opItens(c, f, per){
+    const A=per.a-12, B=per.b-12, it = {};
+    linhasCli[c].forEach(r=>{ if(f!==null && famDe(r[1])!==f) return;
+      const o = it[r[1]] = it[r[1]] || {p:r[1], va:0, vb:0, qa:0, qb:0, ult:-1};
+      if(r[2]>=A && r[2]<=B){ o.va+=r[3]; o.qa+=r[4]; }
+      else if(r[2]>=per.a && r[2]<=per.b){ o.vb+=r[3]; o.qb+=r[4]; }
+      if((r[3]>0||r[4]>0) && r[2]>o.ult) o.ult = r[2]; });
+    return Object.values(it).filter(o=>Math.abs(o.va)>=1||Math.abs(o.vb)>=1)
+      .map(o=>({...o, dif:o.vb-o.va, dq:o.qb-o.qa,
+        sit: o.va>0&&o.vb<=0 ? ["Parou de levar","s-bad"] : o.va<=0&&o.vb>0 ? ["Item novo","s-good"] : o.vb<o.va ? ["Levou menos","s-warn"] : ["Levou mais","s-good"]}))
+      .sort((x,y)=>x.dif-y.dif);
+  }
+  function opItensHTML(x, pAntes, pAgora, cols){
+    const l = opItens(x.c, x.f, opPer), mostra = x.f===null ? l.filter(o=>o.dif<0).slice(0,15) : l;
+    const cel = (v,q) => `${brl0(v)}<span class="un">${un(q)}</span>`;
+    return `<tr class="itens"><td colspan="${cols}"><div class="itbox">
+      <table><thead><tr><th class="l">Item${x.f===null?" (15 maiores quedas)":""}</th><th>${pAntes}</th><th>${pAgora}</th><th>Diferença</th><th class="l">Situação</th><th class="l">Última compra</th></tr></thead><tbody>
+      ${mostra.map(o=>`<tr><td class="l nome">${esc(P.produtos[o.p][0])}</td><td>${cel(o.va,o.qa)}</td><td>${cel(o.vb,o.qb)}</td>
+        <td class="${o.dif<0?"neg":"pos"}">${o.dif<0?"−":"+"}${brl0(Math.abs(o.dif))}<span class="un">${o.dq>0?"+":o.dq<0?"−":""}${un(Math.abs(o.dq))}</span></td>
+        <td class="l"><span class="pill ${o.sit[1]}">${o.sit[0]}</span></td><td class="l">${o.ult>=0?mesCurto(P.meses[o.ult]):"–"}</td></tr>`).join("") || `<tr><td colspan="6" class="empty">sem itens</td></tr>`}
+      </tbody></table>
+      <div class="rod"><span>Unidades = quantidade faturada. Itens que cresceram também aparecem: às vezes o cliente só trocou de apresentação.</span><button class="linkbtn" data-cli="${x.c}">Abrir ficha completa →</button></div>
+    </div></td></tr>`;
+  }
 
   function opCalc(per){
     const A=per.a-12, B=per.b-12;
     // por cliente: total antes/agora e por família antes/agora
-    const cli = Array.from({length:NC}, ()=>({ta:0,tb:0,fa:{},fb:{},pa:{}}));
+    const cli = Array.from({length:NC}, ()=>({ta:0,tb:0,fa:{},fb:{},pa:{},qa:{},qb:{}}));
     P.vendas.forEach(r=>{
       const m=r[2], o=cli[r[0]], f=famDe(r[1]);
-      if(m>=A && m<=B){ o.ta+=r[3]; o.fa[f]=(o.fa[f]||0)+r[3]; (o.pa[f]=o.pa[f]||{})[r[1]]=((o.pa[f]||{})[r[1]]||0)+r[3]; }
-      else if(m>=per.a && m<=per.b){ o.tb+=r[3]; o.fb[f]=(o.fb[f]||0)+r[3]; }
+      if(m>=A && m<=B){ o.ta+=r[3]; o.fa[f]=(o.fa[f]||0)+r[3]; o.qa[f]=(o.qa[f]||0)+r[4]; (o.pa[f]=o.pa[f]||{})[r[1]]=((o.pa[f]||{})[r[1]]||0)+r[3]; }
+      else if(m>=per.a && m<=per.b){ o.tb+=r[3]; o.fb[f]=(o.fb[f]||0)+r[3]; o.qb[f]=(o.qb[f]||0)+r[4]; }
     });
     const fams = {};
     [...OP_FAMILIAS,...OP_SO_RESUMO].forEach(f=>fams[f]={antes:0,agora:0});
@@ -1060,7 +1129,8 @@ nav button.sub svg{width:15px;height:15px}
     const tipo = o => o.tb<=0 ? "parou" : (o.tb < o.ta*0.9 ? "geral" : "familia");
     const gaps = f => cli.map((o,c)=>{
       const antes = f===null ? o.ta : (o.fa[f]||0), agora = f===null ? o.tb : (o.fb[f]||0);
-      return {c, f, antes, agora, gap:antes-agora, tipo: f===null ? (o.tb<=0?"parou":"geral") : tipo(o), varTot: o.ta>0 ? o.tb/o.ta-1 : null,
+      const qAntes = f===null ? null : (o.qa[f]||0), qAgora = f===null ? null : (o.qb[f]||0);
+      return {c, f, antes, agora, gap:antes-agora, qAntes, qAgora, tipo: f===null ? (o.tb<=0?"parou":"geral") : tipo(o), varTot: o.ta>0 ? o.tb/o.ta-1 : null,
               prods: f===null ? [] : Object.entries(o.pa[f]||{}).sort((x,y)=>y[1]-x[1]).slice(0,2).map(([p])=>P.produtos[p][0])};
     }).filter(x=>x.gap>=OP_MIN).sort((x,y)=>y.gap-x.gap);
     const tot = {antes:cli.reduce((s,o)=>s+o.ta,0), agora:cli.reduce((s,o)=>s+o.tb,0)};
@@ -1086,6 +1156,9 @@ nav button.sub svg{width:15px;height:15px}
     el("opper").value = opPer.id;
     el("opper").addEventListener("change", e=>{ opPer = OP_PERIODOS.find(p=>p.id===e.target.value); desenha(); });
     el("opfams").addEventListener("click", opClick);
+    if(C.beta) el("oppauta").addEventListener("click", e=>{ const b=e.target.closest("[data-pauta]"); if(!b) return;
+      opFam = b.dataset.pf; opTipo = "todos"; opAberto = +b.dataset.pauta; desenha();
+      const tr = el("oplista").querySelector(`tr[data-exp="${opAberto}"]`); (tr||el("oplista")).scrollIntoView({behavior:"smooth", block:"start"}); });
     desenha();
 
     function desenha(){
@@ -1110,7 +1183,7 @@ nav button.sub svg{width:15px;height:15px}
       el("opfams").innerHTML = linha(geral) + linhas.map(linha).join("");
       // Pauta: maiores quedas somando todas as famílias
       const todas = OP_FAMILIAS.flatMap(f=>R.gaps(f)).sort((x,y)=>y.gap-x.gap).slice(0,10);
-      el("oppauta").innerHTML = todas.length ? todas.map(x=>`<button class="call" data-cli="${x.c}"><span class="ini">${esc(iniciais(P.clientes[x.c][1]))}</span><span style="min-width:0"><b>${esc(P.clientes[x.c][1])}</b><span>${OP_ROTULO[x.f]||x.f} · ${brl0(x.antes)} → ${brl0(x.agora)}</span></span><span style="text-align:right"><span class="v neg">−${brl0(x.gap)}</span><br><span class="pill ${TIPOS[x.tipo].cls}">${TIPOS[x.tipo].rot}</span></span></button>`).join("")
+      el("oppauta").innerHTML = todas.length ? todas.map(x=>`<button class="call" ${C.beta?`data-pauta="${x.c}" data-pf="${x.f}"`:`data-cli="${x.c}"`}><span class="ini">${esc(iniciais(P.clientes[x.c][1]))}</span><span style="min-width:0"><b>${esc(P.clientes[x.c][1])}</b><span>${OP_ROTULO[x.f]||x.f} · ${brl0(x.antes)} → ${brl0(x.agora)}</span></span><span style="text-align:right"><span class="v neg">−${brl0(x.gap)}</span><br><span class="pill ${TIPOS[x.tipo].cls}">${TIPOS[x.tipo].rot}</span></span></button>`).join("")
         : `<div class="empty">Nenhuma queda acima de ${brl0(OP_MIN)} no período.</div>`;
       desenhaLista(R, per(opPer), per(ant));
     }
@@ -1124,25 +1197,180 @@ nav button.sub svg{width:15px;height:15px}
       const nome = opFam===null ? "todas as famílias" : (OP_ROTULO[opFam]||opFam);
       box.innerHTML = `<div class="ph"><div><h2>Clientes que caíram em ${nome}</h2><div class="sub">${vis.length} clientes · ${brl0(soma)} a menos que em ${pAntes}</div></div></div>
         <div class="tools"><div class="seg" id="optipo"><button data-t="todos" class="${opTipo==="todos"?"on":""}">Todos (${cont.todos})</button>${Object.entries(TIPOS).filter(([k])=>cont[k]).map(([k,t])=>`<button data-t="${k}" class="${opTipo===k?"on":""}">${t.rot} (${cont[k]})</button>`).join("")}</div></div>
-        <div class="tbl"><table><thead><tr><th class="l">Cliente</th><th>${pAntes}</th><th>${pAgora}</th><th>Queda</th><th class="l">Situação</th>${opFam===null?"":`<th>Cliente no total</th><th class="l">O que comprava</th>`}</tr></thead><tbody>
-        ${vis.length ? vis.map(x=>`<tr class="click" tabindex="0" data-cli="${x.c}"><td class="l nome">${nomeCli(x.c)}</td><td>${brl0(x.antes)}</td><td>${brl0(x.agora)}</td><td class="neg">−${brl0(x.gap)}</td><td class="l"><span class="pill ${TIPOS[x.tipo].cls}">${TIPOS[x.tipo].rot}</span></td>${opFam===null?"":`<td class="${ok(x.varTot)&&x.varTot<0?"neg":"pos"}">${ok(x.varTot)?(x.varTot>0?"+":"")+pct(x.varTot,0):"–"}</td><td class="l nome mini">${x.prods.map(esc).join("<br>")}</td>`}</tr>`).join("")
-          : `<tr><td colspan="7" class="empty">Nenhum cliente com queda acima de ${brl0(OP_MIN)}.</td></tr>`}
+        ${C.beta?`<div class="sub" style="margin:-4px 0 10px">Toque no cliente para ver item por item o que ele deixou de levar.</div>`:""}
+        <div class="tbl"><table><thead><tr><th class="l">Cliente</th><th>${pAntes}</th><th>${pAgora}</th><th>Queda</th>${C.beta&&opFam!==null?"<th>Queda (un)</th>":""}<th class="l">Situação</th>${opFam===null?"":`<th>Cliente no total</th><th class="l">O que comprava</th>`}</tr></thead><tbody>
+        ${vis.length ? vis.map(x=>{ const aberto = C.beta && opAberto===x.c, cols = 5+(C.beta&&opFam!==null?1:0)+(opFam===null?0:2);
+          const dq = C.beta&&opFam!==null ? (x.qAntes||0)-(x.qAgora||0) : null;
+          return `<tr class="click${aberto?" exp":""}" tabindex="0" ${C.beta?`data-exp="${x.c}" aria-expanded="${aberto}"`:`data-cli="${x.c}"`}><td class="l nome">${C.beta?'<span class="seta">▸</span>':""}${nomeCli(x.c)}</td><td>${brl0(x.antes)}</td><td>${brl0(x.agora)}</td><td class="neg">−${brl0(x.gap)}</td>${dq===null?"":`<td class="${dq>0?"neg":"pos"}">${dq>0?"−":dq<0?"+":""}${un(Math.abs(dq))}</td>`}<td class="l"><span class="pill ${TIPOS[x.tipo].cls}">${TIPOS[x.tipo].rot}</span></td>${opFam===null?"":`<td class="${ok(x.varTot)&&x.varTot<0?"neg":"pos"}">${ok(x.varTot)?(x.varTot>0?"+":"")+pct(x.varTot,0):"–"}</td><td class="l nome mini">${x.prods.map(esc).join("<br>")}</td>`}</tr>`
+            + (aberto ? opItensHTML(x, pAntes, pAgora, cols) : ""); }).join("")
+          : `<tr><td colspan="8" class="empty">Nenhum cliente com queda acima de ${brl0(OP_MIN)}.</td></tr>`}
         </tbody></table></div>`;
-      el("optipo").onclick = e=>{ const b=e.target.closest("button"); if(!b) return; opTipo=b.dataset.t; desenhaLista(R,pAgora,pAntes); };
+      el("optipo").onclick = e=>{ const b=e.target.closest("button"); if(!b) return; opTipo=b.dataset.t; opAberto=null; desenhaLista(R,pAgora,pAntes); };
+      if(C.beta){
+        const abre = t => { const c=+t.dataset.exp; opAberto = opAberto===c ? null : c; desenhaLista(R,pAgora,pAntes);
+          const tr = box.querySelector(`tr[data-exp="${c}"]`); if(tr && opAberto===c) tr.scrollIntoView({block:"nearest", behavior:"smooth"}); };
+        box.onclick = e=>{ if(e.target.closest("[data-cli]")) return; const t=e.target.closest("[data-exp]"); if(t) abre(t); };
+        box.onkeydown = e=>{ if(e.key!=="Enter"&&e.key!==" ") return; const t=e.target.closest("[data-exp]"); if(t){ e.preventDefault(); abre(t); } };
+      }
     }
     function opClick(e){
       const b = e.target.closest("[data-fam]"); if(!b || b.disabled) return;
-      opFam = b.dataset.fam==="__geral" ? null : b.dataset.fam; opTipo="todos"; desenha();
+      opFam = b.dataset.fam==="__geral" ? null : b.dataset.fam; opTipo="todos"; opAberto=null; desenha();
       el("oplista").scrollIntoView({behavior:"smooth", block:"start"});
     }
   }
   const iniciais = s => s.split(/\s+/).filter(w=>w.length>2).slice(0,2).map(w=>w[0]).join("");
 
+  // ========== PLANO DO MÊS ==========
+  // Ajuda a montar a meta na 1ª semana: meta por família x o que já é esperado, clientes que devem comprar
+  // (compraram no mesmo mês do ano passado ou estão no ritmo de recompra) e um plano que o RCA marca.
+  // O plano fica salvo só neste aparelho (localStorage) e pode ser copiado/baixado para o Excel.
+  const PL_FAMS = [["Bravecto","brav"],["Nobivac","nobiv"],["Defenza","defenz"],["Farma","farma"],["Scalibor","scalib"],["IDEXX","idexx"],["Numelvi",null]];
+  const PL_ROT = {Nobivac:"Nobivac (vacinas)"};
+  const PL_JAN = Math.max(P.meses.indexOf(`${ano}-01`), 12);
+  function plCalc(){
+    // valor por cliente x família x mês
+    const cf = {};
+    P.vendas.forEach(r=>{ const f=famDe(r[1]); const k=r[0]+"|"+f; (cf[k]=cf[k]||new Float64Array(M))[r[2]]+=r[3]; });
+    const cands = [], fam = {};
+    PL_FAMS.forEach(([f])=>fam[f]={ly:0, m3:0, agora:0});
+    Object.entries(cf).forEach(([k,v])=>{
+      const [c,f] = [+k.split("|")[0], k.split("|")[1]];
+      if(fam[f]){ fam[f].ly += v[cur-12]||0; fam[f].m3 += ((v[cur-1]||0)+(v[cur-2]||0)+(v[cur-3]||0))/3; fam[f].agora += v[cur]||0; }
+      if(!fam[f]) return;
+      if((v[cur]||0)>0) return;                          // já comprou esta família no mês
+      let n=0, s=0, ult=-1;
+      for(let m=Math.max(cur-12,0); m<cur; m++) if(v[m]>0){ n++; s+=v[m]; ult=m; }
+      const ly = cur-12>=0 ? v[cur-12] : 0;
+      // gap = acumulado do ano (jan até o último mês fechado) contra o mesmo período do ano passado
+      let ytd=0, ytdAnt=0; for(let m=PL_JAN; m<cur; m++){ ytd+=v[m]||0; if(m-12>=0) ytdAnt+=v[m-12]||0; }
+      const gap = Math.max(ytdAnt-ytd, 0);
+      if(n===0 && !(ly>0) && !(gap>0)) return;
+      const intervalo = n>=3 ? Math.max(Math.round(12/n),1) : null, desde = ult>=0 ? cur-ult : null;
+      // comprou recentemente: dentro do ritmo dele (ou no mês passado, se não tem ritmo) -> menos provável, vai para o fim
+      const recente = desde!==null && (intervalo!==null ? desde<intervalo : desde<=1);
+      const noRitmo = intervalo!==null && !recente && desde<=2*intervalo;
+      const sazonal = ly>0;
+      const valor = n>0 ? s/n : (ly>0 ? ly : gap);
+      const pq = [];
+      if(gap>0) pq.push(`caiu ${brl0(gap)} no ano`);
+      if(sazonal) pq.push(`comprou ${brl0(ly)} em ${mesCurto(P.meses[cur-12])}`);
+      if(noRitmo) pq.push(intervalo===1 ? "compra todo mês" : `compra a cada ~${intervalo} meses`);
+      if(recente) pq.push(`comprou em ${mesCurto(P.meses[ult])}: pedido recente`);
+      // grupo: 0 = com gap, 1 = sem gap (crescendo/estável), 2 = comprou recentemente
+      const grupo = recente ? 2 : gap>0 ? 0 : 1;
+      cands.push({c, f, valor, gap, grupo, recente, ult, n, pq:pq.join(" · "), k:c+"|"+f});
+    });
+    // ordem: maior gap primeiro; empate e sem gap = compra mais antiga primeiro; pedido recente por último
+    cands.sort((a,b)=>a.grupo-b.grupo || b.gap-a.gap || a.ult-b.ult);
+    return {cands, fam};
+  }
+  const PL_KEY = `plano-${C.vendedor}-${C.mesRef}`;
+  const plLer = () => { try{ return new Set(JSON.parse(localStorage.getItem(PL_KEY)||"[]")); }catch(e){ return new Set(); } };
+  const plGravar = s => { try{ localStorage.setItem(PL_KEY, JSON.stringify([...s])); }catch(e){} };
+
+  // Sugestão de composição: reparte a meta total pelo jeito que o RCA costuma vender (média 12 meses fechados),
+  // puxando mais das famílias em queda no ano e menos das que já crescem. Ajuste = 1 − metade do crescimento,
+  // travado entre 0,7 e 1,3 para nunca pedir um valor irreal numa família.
+  // Metas por família da empresa: só aparecem na tela. As contas usam a média (o Lucas considera a média mais real).
+  const CP = [["Bravecto","brav","#5B9CF6"],["Nobivac","nobiv","#5FE0BF"],["Defenza","defenz","#A78BFA"],["Farma","farma","#F59E6B"],["Scalibor","scalib","#FCD34D"],["IDEXX","idexx","#F472B6"],["Numelvi",null,"#22D3EE"],["Outros",null,"#6B7F7B"]];
+  function cpCalc(metaTot){
+    const catDe = p => { const f=famDe(p); return CP.some(c=>c[0]===f) ? f : "Outros"; };
+    const d = {}; CP.forEach(([f])=>d[f]={m12:0, ytd:0, ytdAnt:0});
+    P.vendas.forEach(r=>{ const o=d[catDe(r[1])], m=r[2];
+      if(m>=cur-12 && m<cur) o.m12+=r[3]/12;
+      if(m>=PL_JAN && m<cur) o.ytd+=r[3];
+      if(m>=PL_JAN-12 && m<cur-12) o.ytdAnt+=r[3]; });
+    const t12 = CP.reduce((s,[f])=>s+d[f].m12,0);
+    CP.forEach(([f])=>{ const o=d[f]; o.share = t12>0 ? o.m12/t12 : 0;
+      o.g = o.ytdAnt>0 && !OP_SO_RESUMO.includes(f) ? o.ytd/o.ytdAnt-1 : null;   // IDEXX e Numelvi: linhas novas, entram pela média sem ajuste
+      o.aj = o.g===null ? 1 : Math.min(Math.max(1-o.g/2, 0.7), 1.3);
+      o.w = o.share*o.aj; });
+    const tw = CP.reduce((s,[f])=>s+d[f].w,0);
+    CP.forEach(([f])=>{ const o=d[f]; o.sug = tw>0 ? o.w/tw : 0; o.valor = ok(metaTot) ? metaTot*o.sug : null; });
+    return {d, t12};
+  }
+
+  function drawPlano(){
+    const metasOk = C.metasMes ? C.metasMes===C.mesRef : true;
+    const R = plCalc(), marc = plLer();
+    let filtro = "todas";
+    const metaDe = k => k && metasOk && ok(C.metas[k]) && C.metas[k]>0 ? C.metas[k] : null;
+    const mTotal = metaDe("total"), vendidoTot = mt("total").real;
+    const K = cpCalc(mTotal);   // sugestão por família (média 12 meses ajustada) = base do "Falta encontrar"
+    section(`
+      <div class="head"><div><h1>Plano de ${MES_NOME[mes-1]}</h1><div class="sub">Monte sua meta na primeira semana: de onde vai sair cada real</div></div>
+        <div class="tools" style="margin:0"><button class="linkbtn" id="plcopiar">${ICON.copiar} Copiar para o Excel</button><button class="linkbtn" id="plbaixar">Baixar planilha</button></div></div>
+      ${metasOk?"":`<div class="aviso">As metas de ${MES_NOME[mes-1]} ainda não foram carregadas. O histórico e a lista de clientes já valem; as metas aparecem assim que forem lançadas.</div>`}
+      <section class="pl-top">
+        <div class="panel"><div class="ph"><div><h2>Seu plano</h2><div class="sub">Vendido até agora + o que você espera dos clientes marcados</div></div></div><div id="plresumo"></div></div>
+        <div class="panel"><div class="ph"><div><h2>Sugestão de composição</h2><div class="sub">Como dividir a meta pelo jeito que você vende</div></div></div><div id="plcomp"></div></div>
+      </section>
+      <div class="panel"><div class="ph"><div><h2>Meta por família</h2><div class="sub">Onde a meta está apertada · <b>Mesmo mês ${ano-1}</b>: o que seus clientes compraram em ${mesCurto(P.meses[cur-12])} · <b>Média 3 meses</b>: ${mesCurto(P.meses[cur-3])} a ${mesCurto(P.meses[cur-1])} · <b>Sugestão</b>: a composição ao lado · <b>Falta encontrar</b>: sugestão − vendido − planejado · a meta da empresa por família fica só como referência</div></div></div><div class="tbl"><table id="plfam"></table></div></div>
+      <div class="panel"><div class="ph"><div><h2>Quem deve comprar em ${MES_NOME[mes-1]}</h2><div class="sub">Clientes que ainda não compraram a família este mês. Primeiro quem mais caiu no ano; depois quem está há mais tempo sem comprar; por último quem fez pedido recente. Valor esperado = média do que levam quando compram.</div></div></div>
+        <div class="tools"><div class="seg" id="plseg"></div><button class="linkbtn" id="pltodos">Marcar todos da lista</button><button class="linkbtn" id="pllimpa">Limpar plano</button></div>
+        <div class="tbl"><table id="plcli"></table></div></div>`);
+
+    const planejado = () => { const pf = {}; let t=0; R.cands.forEach(x=>{ if(marc.has(x.k)){ pf[x.f]=(pf[x.f]||0)+x.valor; t+=x.valor; } }); return {pf, t}; };
+    function resumo(){
+      const pl = planejado(), alvo = mTotal, tot = vendidoTot + pl.t;
+      const w = v => alvo ? Math.min(v/alvo,1)*100 : 0;
+      el("plresumo").innerHTML = `<div class="pl-big">${brl0(tot)} <span style="font-size:15px;font-weight:600;color:var(--muted)">de ${alvo?brl0(alvo):"meta sem dado"}</span></div>
+        <div class="pl-bar"><i class="v" style="width:${w(vendidoTot)}%"></i><i class="p" style="width:${Math.max(w(tot)-w(vendidoTot),0)}%"></i></div>
+        <div class="pl-leg"><span style="--c:var(--good)">Vendido ${brl0(vendidoTot)}</span><span style="--c:var(--accent)">Planejado ${brl0(pl.t)} (${marc.size} marcações)</span>
+        ${alvo?`<span style="--c:var(--track)">${tot>=alvo?`<b class="pos">Meta coberta</b>`:`Falta encontrar <b>${brl0(alvo-tot)}</b>`}</span>`:""}</div>`;
+      el("plfam").innerHTML = `<thead><tr><th class="l">Família</th><th>Sugestão</th><th>Meta da empresa</th><th>Mesmo mês ${ano-1}</th><th>Média 3 meses</th><th>Vendido</th><th>Planejado</th><th>Falta encontrar</th></tr></thead><tbody>`+
+        PL_FAMS.map(([f,k])=>{ const m=metaDe(k), sug=K.d[f]?K.d[f].valor:null, a=R.fam[f], p=pl.pf[f]||0, falta = ok(sug) ? sug-a.agora-p : null;
+          return `<tr><td class="l">${PL_ROT[f]||f}</td><td><b>${ok(sug)?brl0(sug):"–"}</b></td><td class="mini">${m!==null?brl0(m):"–"}</td><td>${brl0(a.ly)}</td><td>${brl0(a.m3)}</td><td>${brl0(a.agora)}</td><td>${brl0(p)}</td>
+            <td class="${falta===null?"":falta>0?"neg":"pos"}">${falta===null?"–":falta>0?brl0(falta):"coberta"}</td></tr>`; }).join("")+`</tbody>`;
+    }
+    function lista(){
+      const cont = {todas:R.cands.length}; R.cands.forEach(x=>cont[x.f]=(cont[x.f]||0)+1);
+      el("plseg").innerHTML = [["todas","Todas"],...PL_FAMS.filter(([f])=>cont[f]).map(([f])=>[f,PL_ROT[f]||f])].map(([id,r])=>`<button data-f="${id}" class="${filtro===id?"on":""}">${r} (${cont[id]||0})</button>`).join("");
+      const vis = R.cands.filter(x=>filtro==="todas"||x.f===filtro);
+      el("plcli").innerHTML = `<thead><tr><th>No plano</th><th class="l">Cliente</th><th class="l">Família</th><th>Gap no ano</th><th class="l">Por quê</th><th>Valor esperado</th><th class="l">Última compra</th></tr></thead><tbody>`+
+        (vis.length ? vis.map(x=>`<tr class="${marc.has(x.k)?"no-plano":""}"><td><input type="checkbox" class="chk" data-k="${x.k}" ${marc.has(x.k)?"checked":""} aria-label="Colocar no plano"></td>
+          <td class="l nome"><button class="linkbtn" data-cli="${x.c}" style="text-align:left">${esc(P.clientes[x.c][1])}</button><div class="cod">${P.clientes[x.c][0]} · ${isJ(x.c)?"CNPJ":"CPF"}</div></td>
+          <td class="l">${PL_ROT[x.f]||x.f}</td><td class="${x.gap>0?"neg":""}">${x.gap>0?"−"+brl0(x.gap):"–"}</td><td class="l why">${x.recente?'<span class="pill s-none">Pedido recente</span> ':""}${x.pq}</td><td>${brl0(x.valor)}</td><td class="l">${x.ult>=0?mesCurto(P.meses[x.ult]):"–"}</td></tr>`).join("")
+          : `<tr><td colspan="7" class="empty">Nenhum cliente nesta família.</td></tr>`)+`</tbody>`;
+    }
+    const tabela = () => [["Cliente","Código","Tipo","Família","Gap no ano","Por quê","Valor esperado","Última compra"],
+      ...R.cands.filter(x=>marc.has(x.k)).map(x=>[P.clientes[x.c][1], P.clientes[x.c][0], isJ(x.c)?"CNPJ":"CPF", PL_ROT[x.f]||x.f, Math.round(x.gap*100)/100, x.pq, Math.round(x.valor*100)/100, x.ult>=0?mesCurto(P.meses[x.ult]):""])];
+    const celula = v => typeof v==="number" ? String(v).replace(".",",") : String(v);
+    el("plseg").addEventListener("click", e=>{ const b=e.target.closest("button"); if(!b) return; filtro=b.dataset.f; lista(); });
+    el("plcli").addEventListener("change", e=>{ const k=e.target.dataset.k; if(!k) return; e.target.checked ? marc.add(k) : marc.delete(k);
+      e.target.closest("tr").classList.toggle("no-plano", e.target.checked); plGravar(marc); resumo(); });
+    el("pltodos").onclick = ()=>{ R.cands.filter(x=>filtro==="todas"||x.f===filtro).forEach(x=>marc.add(x.k)); plGravar(marc); lista(); resumo(); };
+    el("pllimpa").onclick = ()=>{ marc.clear(); plGravar(marc); lista(); resumo(); };
+    el("plcopiar").onclick = ()=>{ const b=el("plcopiar"), txt=tabela().map(l=>l.map(celula).join("\t")).join("\n");
+      const ok_=()=>{ b.innerHTML=`${ICON.copiar} Copiado. Cole no Excel`; setTimeout(()=>{ b.innerHTML=`${ICON.copiar} Copiar para o Excel`; },2500); };
+      try{ navigator.clipboard.writeText(txt).then(ok_, ()=>{ b.textContent="Não deu para copiar: use Baixar planilha"; }); }catch(e){ b.textContent="Não deu para copiar: use Baixar planilha"; } };
+    el("plbaixar").onclick = ()=>{ const csv = "\ufeff"+tabela().map(l=>l.map(v=>{ const t=celula(v); return /[;"\n]/.test(t)?`"${t.replace(/"/g,'""')}"`:t; }).join(";")).join("\r\n");
+      const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));
+      a.download=`plano-${C.vendedor.split(" ")[0].toLowerCase()}-${C.mesRef}.csv`; document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },500); };
+    function composicao(){
+      const nome = f => PL_ROT[f]||f;
+      const barra = campo => `<div class="cp-bar">${CP.map(([f,,cor])=>`<i style="width:${(K.d[f][campo]*100).toFixed(2)}%;background:${cor}" title="${nome(f)}: ${pct(K.d[f][campo],0)}"></i>`).join("")}</div>`;
+      const motivo = o => o.g===null ? "linha nova: sem comparação com o ano passado"
+        : o.g<=-0.02 ? `caiu ${pct(-o.g,0)} no ano: tem espaço para recuperar`
+        : o.g>=0.02 ? `cresceu ${pct(o.g,0)} no ano: já está rendendo, a sugestão pesa um pouco menos`
+        : "estável no ano";
+      el("plcomp").innerHTML = `
+        <div class="cp-lab">Como você vende (média ${mesCurto(P.meses[cur-12])} a ${mesCurto(P.meses[cur-1])}: ${brl0(K.t12)}/mês)</div>${barra("share")}
+        <div class="cp-lab">Sugestão para a meta${mTotal?` de ${brl0(mTotal)}`:""}</div>${barra("sug")}
+        ${CP.map(([f,k,cor])=>{ const o=K.d[f];
+          return `<div class="cp-l"><i style="background:${cor}"></i><span><b>${nome(f)}</b> · costuma ${brl0(o.m12)} (${pct(o.share,0)})</span>
+            <span class="v">${o.valor!==null?brl0(o.valor):pct(o.sug,0)}</span>
+            <span class="d">${motivo(o)}</span></div>`; }).join("")}`;
+    }
+    resumo(); lista(); composicao();
+  }
+
   // ========== TOP 20 ==========
-  function drawTop(){
+  function topHTML(){
     // Maiores clientes do ano anterior inteiro (jan a dez) e como estão este ano
     const anoAnt = ano-1, ia = P.meses.indexOf(`${anoAnt}-01`), ib = P.meses.indexOf(`${anoAnt}-12`);
-    if(ia<0 || ib<0){ section(`<div class="head"><div><h1>Top 20 clientes de ${anoAnt}</h1></div></div><div class="panel empty">sem dado: a planilha não tem o ano de ${anoAnt} completo</div>`); return; }
+    if(ia<0 || ib<0) return `<div class="panel empty">sem dado: a planilha não tem o ano de ${anoAnt} completo</div>`;
     const tot = Array.from({length:NC}, (_,c)=>soma(c,ia,ib));
     const total = tot.reduce((x,y)=>x+y,0);
     const top = [...Array(NC).keys()].filter(c=>tot[c]>0).sort((x,y)=>tot[y]-tot[x]).slice(0,20);
@@ -1158,10 +1386,10 @@ nav button.sub svg{width:15px;height:15px}
       return `<tr class="click" tabindex="0" data-cli="${c}"><td>${i+1}º</td><td class="l nome">${nomeCli(c)}</td><td>${brl0(tot[c])}</td><td>${pct(tot[c]/total)}</td><td>${pct(acc/total,0)}</td>
         ${temComp?`<td>${brl0(agora)}</td><td class="${v===null?"":v<0?"neg":"pos"}">${v===null?"–":(v>0?"+":"")+pct(v,0)}</td><td class="${agora-antes<0?"neg":"pos"}">${agora-antes<0?"−":"+"}${brl0(Math.abs(agora-antes))}</td>`:""}</tr>`; }).join("");
     const perEste = temComp ? `jan a ${mesCurto(P.meses[fech])}` : "";
-    section(`
-      <div class="head"><div><h1>Top 20 clientes de ${anoAnt}</h1><div class="sub">Ano de ${anoAnt} inteiro (jan a dez/${String(anoAnt).slice(2)}) e como estão em ${ano}</div></div></div>
+    return `
+      <h2 style="margin:4px 0 6px">Top 20 clientes de ${anoAnt} <span style="text-transform:none;letter-spacing:0;font-weight:500">· ano inteiro e como estão em ${ano}</span></h2>
       <p class="lead">Seus 20 maiores clientes de ${anoAnt} somaram <b>${brl0(somaTop)}</b>, <b>${pct(somaTop/total,0)}</b> de tudo que você vendeu no ano.${caindo?` <b>${caindo}</b> deles estão comprando menos em ${ano} do que no mesmo período de ${anoAnt}: juntos, deixaram de comprar <b class="neg">${brl0(perdeu)}</b>.`:""}</p>
-      <div class="panel tbl"><table><thead><tr><th>#</th><th class="l">Cliente</th><th>${anoAnt}</th><th>% da venda</th><th>Acumulado</th>${temComp?`<th>${ano} (${perEste})</th><th>vs mesmo período ${anoAnt}</th><th>Diferença (R$)</th>`:""}</tr></thead><tbody>${rows}</tbody></table></div>`);
+      <div class="panel tbl"><table><thead><tr><th>#</th><th class="l">Cliente</th><th>${anoAnt}</th><th>% da venda</th><th>Acumulado</th>${temComp?`<th>${ano} (${perEste})</th><th>vs mesmo período ${anoAnt}</th><th>Diferença (R$)</th>`:""}</tr></thead><tbody>${rows}</tbody></table></div>`;
   }
 
   // ========== SEM COMPRA NO MÊS ==========
