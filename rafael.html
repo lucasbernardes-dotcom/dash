@@ -51,28 +51,28 @@ const CONFIG = {
     mesRef: "2026-09",
     dataCorte: "2026-09-30",
     feriados: ["2026-09-07"],
-    posicaoRanking: 6,
-    totalRCAs: 6,
+    posicaoRanking: null,
+    totalRCAs: 0,
     rankingFamilias: {"Bravecto": 5, "Nobivac": 2, "Defenza": 5, "Farma": 1, "IDEXX": 2},
     gamificacao: {"meses": ["2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07", "2026-08", "2026-09"], "medidas": [{"k": "base", "nome": "Aproveitamento da base", "desc": "clientes da carteira que compraram no mês"}, {"k": "mix", "nome": "Mix", "desc": "itens diferentes que cada cliente leva, do catálogo já vendido"}, {"k": "recuperacao", "nome": "Recuperação", "desc": "clientes parados que voltaram a comprar"}, {"k": "evolucao", "nome": "Evolução", "desc": "venda do ano até agora contra o mesmo período do ano passado"}], "reguas": {"base": [0.41, 0.46, 0.51], "mix": [0.025, 0.028, 0.031], "recuperacao": [0.13, 0.14, 0.16], "evolucao": [0.01, 0.1, 0.2]}, "catalogo": 153, "destaques": ["mix", "recuperacao"], "proxDestaques": ["base", "evolucao"], "desafio": {"medida": "base", "nome": "Aproveitamento da base da equipe", "atual": 0.4305, "alvo": 0.4663, "alvoMes": "2026-03", "serie": [0.4635, 0.4241, 0.4663, 0.4526, 0.3983, 0.4267, 0.4144, 0.4628, 0.4305], "faltam": 32}, "eu": {"base": {"atual": 0.4675, "nivel": 2, "recorde": 0.5, "recordeMes": "2026-01", "seq": 0, "conquistas": [], "serie": [0.5, 0.4437, 0.4813, 0.4294, 0.3827, 0.4294, 0.4634, 0.4311, 0.4675]}, "mix": {"atual": 0.0235, "nivel": 0, "recorde": 0.03, "recordeMes": "2026-01", "seq": 0, "conquistas": [], "serie": [0.03, 0.0299, 0.0271, 0.0258, 0.0239, 0.0224, 0.0261, 0.0244, 0.0235]}, "recuperacao": {"atual": 0.0682, "nivel": 0, "recorde": 0.2791, "recordeMes": "2026-03", "seq": 0, "conquistas": [["2026-02", 0.1778, 0.1628], ["2026-03", 0.2791, 0.1778]], "serie": [0.1628, 0.1778, 0.2791, 0.1143, 0.0526, 0.1, 0.1818, 0.1333, 0.0682]}, "evolucao": {"atual": 0.2089, "nivel": 3, "recorde": 0.3899, "recordeMes": "2026-01", "seq": 8, "conquistas": [], "serie": [0.3899, 0.212, 0.253, 0.3376, 0.3515, 0.3454, 0.3539, 0.3834, 0.2089]}}, "contas": {"base": [79, 169], "recuperacao": [3, 44], "introducao": [26, 79]}, "posicoes": {"mix": 6, "recuperacao": 6}, "totalRCAs": 6},
     metasMes: "2026-09",
     beta: true,
     metas: {
-      total: 328400,
-      msd: 287100,
-      vallee: 150,
-      totalquim: 0,
-      absort: 650,
-      idexx: 39850,
-      pos: 71,
-      itens: 30,
-      farma: 18650,
-      nobiv: 218800,
-      scalib: 4050,
-      brav: 43350,
-      defenz: 15511,
-      brav365: 8390,
-      cluster_ouro: 12.91
+      total: null,
+      msd: null,
+      vallee: null,
+      totalquim: null,
+      absort: null,
+      idexx: null,
+      pos: null,
+      itens: null,
+      farma: null,
+      nobiv: null,
+      scalib: null,
+      brav: null,
+      defenz: null,
+      brav365: null,
+      cluster_ouro: null
     }
   };
 
@@ -875,9 +875,9 @@ nav button.sub svg{width:15px;height:15px}
       </div>
       <section class="kpis">
         ${kpi("Vendido no mês","cifrao",brl0(tot.real),`${seta(varLy)} contra ${lyIdx>=0?mesCurto(P.meses[lyIdx]):"ano passado"}`,`<div class="spark">${spark(serieVenda,"sg1")}</div>`)}
-        ${kpi("Meta total","alvo",pct(tot.p),`<span class="pill s-${tot.st}">${statusTxt[tot.st]}</span> ritmo esperado ${pct(ritmo,0)}`,`<div class="bar" style="margin-top:auto"><div class="fill ${tot.st}" style="width:${Math.min(tot.p||0,1)*100}%"></div>${ok(ritmo)?`<div class="mark" style="left:calc(${ritmo*100}% - 1px)"></div>`:""}</div><div class="det" style="margin-top:6px">${brl0(tot.real)} de ${brl0(tot.meta)}</div>`)}
-        ${kpi("Preciso vender por dia útil","calendario",falta>0?brl0(porDia):"Meta batida",falta>0?`Falta ${brl0(falta)} em ${uteisRestantes} dias úteis`:"Tudo que vier agora é extra",`<div class="daysbar" title="${uteisPassados} de ${uteisMes} dias úteis">${dias}</div>`)}
-        ${kpi("Clientes positivados","pessoas",`${pos.real} <small>de ${ok(pos.meta)?pos.meta:"–"}</small>`,faltaPos>0?`Faltam ${faltaPos} · <button class="linkbtn" data-go="semcompra">ver quem visitar</button>`:`<span class="up">Meta batida</span>${ok(posLy)?` · ${posLy} em ${mesCurto(P.meses[lyIdx])}`:""}`,`<div class="spark">${spark(seriePos,"sg2")}</div>`)}
+        ${kpi("Meta total","alvo",pct(tot.p),`<span class="pill s-${tot.st}">${statusTxt[tot.st]}</span> ritmo esperado ${pct(ritmo,0)}`,`<div class="bar" style="margin-top:auto"><div class="fill ${tot.st}" style="width:${Math.min(tot.p||0,1)*100}%"></div>${ok(ritmo)?`<div class="mark" style="left:calc(${ritmo*100}% - 1px)"></div>`:""}</div><div class="det" style="margin-top:6px">${ok(tot.meta)?`${brl0(tot.real)} de ${brl0(tot.meta)}`:"meta do mês ainda não carregada"}</div>`)}
+        ${kpi("Preciso vender por dia útil","calendario",!ok(tot.meta)?"sem meta":falta>0?brl0(porDia):"Meta batida",!ok(tot.meta)?"Meta do mês ainda não carregada":falta>0?`Falta ${brl0(falta)} em ${uteisRestantes} dias úteis`:"Tudo que vier agora é extra",`<div class="daysbar" title="${uteisPassados} de ${uteisMes} dias úteis">${dias}</div>`)}
+        ${kpi("Clientes positivados","pessoas",`${pos.real} <small>de ${ok(pos.meta)?pos.meta:"–"}</small>`,faltaPos>0?`Faltam ${faltaPos} · <button class="linkbtn" data-go="semcompra">ver quem visitar</button>`:`<span class="${ok(pos.meta)?"up":""}">${ok(pos.meta)?"Meta batida":"sem meta"}</span>${ok(posLy)?` · ${posLy} em ${mesCurto(P.meses[lyIdx])}`:""}`,`<div class="spark">${spark(seriePos,"sg2")}</div>`)}
       </section>
       <section class="row2">
         <div class="panel"><div class="ph"><div><h2>Vendas mês a mês</h2><div class="sub">Média dos 11 meses anteriores: ${brl0(media12)} · clique num mês para ver onde vendeu</div></div><span class="tag">Últimos 12 meses</span></div>
