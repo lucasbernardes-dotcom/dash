@@ -39,7 +39,7 @@
    • rankingFamilias = posição do RCA em cada família, pelo valor vendido no mês.
      Só a posição dele vai no painel; os números dos colegas não entram aqui.
    • Chaves das metas: total, msd, idexx, vallee, absort (Absortec), totalquim (Total Química),
-     farma, nobiv (Nobivac), brav (Família Bravecto), brav365 (Bravecto 365), defenz (Defenza),
+     farma, nobiv (Nobivac), campanha (Bravecto + Defenza + Bravecto 365), primore,
      scalib (Scalibor), pos (positivação, em clientes), itens (introdução de itens),
      cluster_ouro (só a meta, sem realizado)
    • gamificacao = medidas em %, níveis (Bronze/Prata/Ouro), recordes e desafio da equipe.
@@ -65,14 +65,12 @@ const CONFIG = {
       absort: 1100,
       idexx: 4600,
       pos: 59,
-      itens: null,
-      farma: null,
-      nobiv: null,
-      scalib: null,
-      brav: null,
-      defenz: null,
-      brav365: null,
-      cluster_ouro: null,
+      itens: 33,
+      farma: 2350,
+      nobiv: 106100,
+      scalib: 700,
+      campanha: 101819,
+      cluster_ouro: 11.966666666666667,
       primore: 1000
     }
   };
@@ -533,11 +531,10 @@ nav button.sub svg{width:15px;height:15px}
     {g:"Fornecedores",ic:"frasco", k:"idexx",     rot:"IDEXX",             calc:()=>vendaMes(p=>forn(p,"IDEXX"))},
     {g:"Fornecedores",ic:"box", k:"vallee",    rot:"Vallée",            calc:()=>vendaMes(p=>forn(p,"VALL"))},
     {g:"Fornecedores",ic:"box", k:"absort",    rot:"Absortec",          calc:()=>vendaMes(p=>forn(p,"ABSORTEC"))},
+    {g:"Fornecedores",ic:"box", k:"primore",   rot:"Primore",           calc:()=>vendaMes(p=>forn(p,"PRIMORE"))},
     {g:"Fornecedores",ic:"gota", k:"totalquim", rot:"Total Química",     calc:()=>vendaMes(p=>forn(p,"TOTAL QUIMICA"))},
     {g:"Linhas MSD",  ic:"seringa", k:"nobiv",     rot:"Nobivac",           calc:()=>vendaMes(p=>prod(p,"NOBIVAC"))},
-    {g:"Linhas MSD",  ic:"pata", k:"brav",      rot:"Família Bravecto",  calc:()=>vendaMes(p=>prod(p,"BRAVECTO"))},
-    {g:"Linhas MSD",  ic:"pata", k:"brav365",   rot:"Bravecto 365",      calc:()=>vendaMes(p=>prod(p,"BRAVECTO")&&prod(p,"365"))},
-    {g:"Linhas MSD",  ic:"escudo", k:"defenz",    rot:"Defenza",           calc:()=>vendaMes(p=>prod(p,"DEFENZ"))},
+    {g:"Linhas MSD",  ic:"pata", k:"campanha",  rot:"Campanha antiparasitária (Bravecto, Defenza e Bravecto 365)", calc:()=>vendaMes(p=>prod(p,"BRAVECTO")||prod(p,"DEFENZA "))},
     {g:"Linhas MSD",  ic:"escudo", k:"scalib",    rot:"Scalibor",          calc:()=>vendaMes(p=>prod(p,"SCALIBOR"))},
     {g:"Linhas MSD",  ic:"pilula", k:"farma",     rot:"Farma",             calc:()=>vendaMes(p=>P.produtos[p][2]===1)},
     {g:"Atividade",   ic:"pessoas", k:"pos",       rot:"Positivação (clientes CNPJ)", un:true, calc:()=>positivados().length},
@@ -848,7 +845,7 @@ nav button.sub svg{width:15px;height:15px}
       if(m.g!==grp){ grp=m.g; lista += `<div class="mg">${grp}</div>`; }
       const fmt = m.un ? inteiro : brl0;
       let dir, info;
-      if(m.soMeta){ dir=`<span class="p none">só meta</span>`; info=`Meta <b>${ok(m.meta)?inteiro(m.meta):"sem dado"}</b> · realizado sem dado`; }
+      if(m.soMeta){ dir=`<span class="p none">só meta</span>`; info=`Meta <b>${ok(m.meta)?m.meta.toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2}):"sem dado"}</b> · realizado sem dado`; }
       else if(!ok(m.meta)){ dir=`<span class="p none">sem dado</span>`; info=`Vendido <b>${fmt(m.real)}</b>`; }
       else if(m.meta===0){ dir=`<span class="p none">sem meta</span>`; info=`Vendido <b>${fmt(m.real)}</b>`; }
       else { const f=Math.max(m.meta-m.real,0);
