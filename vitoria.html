@@ -311,6 +311,7 @@ tr.itens > td{padding:0 0 12px;background:var(--surface2)}
 .seta{display:inline-block;width:14px;color:var(--muted);transition:transform .15s}
 tr.exp .seta{transform:rotate(90deg)}
 .grp{color:var(--accent)}
+.filtog{cursor:pointer;font-family:inherit}.filtog:hover{filter:brightness(1.25)}tr.fsub.fechada{display:none!important}tr.fsub td{font-size:.92em;opacity:.85}tr.fsub td.nome{padding-left:22px}
 .pill.fil{background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent-line);font-size:11px;vertical-align:1px}
 .itbox .itbox{padding:4px 0 0 10px;border-left:2px solid var(--accent-line)}
 #oplista .tools{display:flex;gap:10px;flex-wrap:wrap}
@@ -773,6 +774,10 @@ nav button.sub svg{width:15px;height:15px}
     if(atual && atual.id==="clientes" && el("busca")){ el("busca").value=q; el("busca").dispatchEvent(new Event("input")); } else ir("clientes",{q}); e.target.focus(); });
   el("nav").addEventListener("click", e=>{ const b=e.target.closest("button"); if(b) ir(b.dataset.id); });
   el("main").addEventListener("click", e=>{
+    const fb = e.target.closest("[data-fil]");
+    if(fb){ const ab = fb.getAttribute("aria-expanded")!=="true"; fb.setAttribute("aria-expanded", ab);
+      fb.textContent = fb.textContent.replace(/[▾▴]/, ab?"▴":"▾");
+      el("main").querySelectorAll(`tr[data-of="${fb.dataset.fil}"]`).forEach(r=>r.classList.toggle("fechada",!ab)); return; }
     const t = e.target.closest("[data-cli]"); if(t){ abrirCliente(+t.dataset.cli); return; }
     const g = e.target.closest("[data-go]"); if(g) ir(g.dataset.go);
   });
@@ -1471,8 +1476,13 @@ nav button.sub svg{width:15px;height:15px}
       const agora = temComp ? soma(c,jan,fech) : null, antes = temComp ? soma(c,ia,fechAnt) : null;
       const v = ok(agora)&&ok(antes)&&antes>0 ? agora/antes-1 : null;
       if(v!==null && v<0){ caindo++; perdeu += antes-agora; }
-      return `<tr class="click" tabindex="0" data-cli="${c}"><td>${i+1}º</td><td class="l nome">${nomeCli(c)}</td><td>${brl0(tot[c])}</td><td>${pct(tot[c]/total)}</td><td>${pct(acc/total,0)}</td>
-        ${temComp?`<td>${brl0(agora)}</td><td class="${v===null?"":v<0?"neg":"pos"}">${v===null?"–":(v>0?"+":"")+pct(v,0)}</td><td class="${agora-antes<0?"neg":"pos"}">${agora-antes<0?"−":"+"}${brl0(Math.abs(agora-antes))}</td>`:""}</tr>`; }).join("");
+      const comp = (ag,an) => { const w = ok(ag)&&ok(an)&&an>0 ? ag/an-1 : null;
+        return temComp?`<td>${brl0(ag)}</td><td class="${w===null?"":w<0?"neg":"pos"}">${w===null?"–":(w>0?"+":"")+pct(w,0)}</td><td class="${ag-an<0?"neg":"pos"}">${ag-an<0?"−":"+"}${brl0(Math.abs(ag-an))}</td>`:""; };
+      // grupo: a etiqueta "X filiais" abre/fecha as filiais logo abaixo (cada filial abre a própria ficha)
+      const nome = ehGrupo(c) ? `${esc(nomeDe(c))} <button class="pill fil filtog" data-fil="${c}" aria-expanded="false">${GRUPOS[c-NC].cs.length} filiais ▾</button><div class="cod">Cliente principal · toque nas filiais para abrir</div>` : nomeCli(c);
+      const filiais = ehGrupo(c) ? [...GRUPOS[c-NC].cs].sort((x,y)=>tot[y]-tot[x]).map(f=>`<tr class="click fsub fechada" data-of="${c}" tabindex="0" data-cli="${f}"><td></td><td class="l nome">↳ ${esc(P.clientes[f][1])}<div class="cod">${P.clientes[f][0]} · ${isJ(f)?"CNPJ":"CPF"}</div></td><td>${brl0(tot[f])}</td><td>${pct(tot[f]/total)}</td><td></td>${comp(temComp?soma(f,jan,fech):null, temComp?soma(f,ia,fechAnt):null)}</tr>`).join("") : "";
+      return `<tr class="click" tabindex="0" data-cli="${c}"><td>${i+1}º</td><td class="l nome">${nome}</td><td>${brl0(tot[c])}</td><td>${pct(tot[c]/total)}</td><td>${pct(acc/total,0)}</td>
+        ${comp(agora,antes)}</tr>${filiais}`; }).join("");
     const perEste = temComp ? `jan a ${mesCurto(P.meses[fech])}` : "";
     return `
       <h2 style="margin:4px 0 6px">Top 20 clientes de ${anoAnt} <span style="text-transform:none;letter-spacing:0;font-weight:500">· ano inteiro e como estão em ${ano}</span></h2>
