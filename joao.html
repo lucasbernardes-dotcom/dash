@@ -56,6 +56,8 @@ const CONFIG = {
     rankingFamilias: {"Bravecto": 4, "Nobivac": 3, "Defenza": 6, "Farma": 3, "IDEXX": 4},
     gamificacao: {"meses": ["2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07", "2026-08", "2026-09", "2026-10"], "medidas": [{"k": "base", "nome": "Aproveitamento da base", "desc": "clientes da carteira que compraram no mês"}, {"k": "mix", "nome": "Mix", "desc": "itens diferentes que cada cliente leva, do catálogo já vendido"}, {"k": "recuperacao", "nome": "Recuperação", "desc": "clientes parados que voltaram a comprar"}, {"k": "evolucao", "nome": "Evolução", "desc": "venda do ano até agora contra o mesmo período do ano passado"}], "reguas": {"base": [0.38, 0.42, 0.47], "mix": [0.027, 0.031, 0.034], "recuperacao": [0.17, 0.19, 0.21], "evolucao": [0.01, 0.1, 0.2]}, "catalogo": 169, "destaques": ["base", "evolucao"], "proxDestaques": ["mix", "recuperacao"], "desafio": {"medida": "base", "nome": "Aproveitamento da base da equipe", "atual": 0.236, "alvo": 0.3888, "alvoMes": "2026-03", "serie": [0.377, 0.3451, 0.3888, 0.3868, 0.3578, 0.3068, 0.3323, 0.3879, 0.3852, 0.236], "faltam": 104}, "eu": {"base": {"atual": 0.1771, "nivel": 0, "recorde": 0.4111, "recordeMes": "2026-04", "seq": 0, "conquistas": [["2026-03", 0.407, 0.3146], ["2026-04", 0.4111, 0.407]], "serie": [0.3146, 0.2941, 0.407, 0.4111, 0.3333, 0.3298, 0.3617, 0.3548, 0.3789, 0.1771]}, "mix": {"atual": 0.015, "nivel": 0, "recorde": 0.0269, "recordeMes": "2026-02", "seq": 0, "conquistas": [["2026-02", 0.0269, 0.0187]], "serie": [0.0187, 0.0269, 0.0239, 0.0199, 0.023, 0.0201, 0.026, 0.0135, 0.0194, 0.015]}, "recuperacao": {"atual": 0.069, "nivel": 0, "recorde": 0.2903, "recordeMes": "2026-08", "seq": 3, "conquistas": [["2026-02", 0.1765, 0.1622], ["2026-03", 0.2143, 0.1765], ["2026-04", 0.2692, 0.2143], ["2026-08", 0.2903, 0.2692]], "serie": [0.1622, 0.1765, 0.2143, 0.2692, 0.1667, 0.1429, 0.2593, 0.2903, 0.25, 0.069]}, "evolucao": {"atual": -0.0985, "nivel": 0, "recorde": -0.1025, "recordeMes": "2026-09", "seq": 0, "conquistas": [["2026-02", -0.3595, -0.4553], ["2026-04", -0.2683, -0.3595], ["2026-05", -0.2522, -0.2683], ["2026-06", -0.2194, -0.2522], ["2026-07", -0.1965, -0.2194], ["2026-08", -0.14, -0.1965], ["2026-09", -0.1025, -0.14]], "serie": [-0.4553, -0.3595, -0.392, -0.2683, -0.2522, -0.2194, -0.1965, -0.14, -0.1025, -0.0985]}}, "contas": {"base": [17, 96], "recuperacao": [2, 29], "introducao": [7, 17]}, "posicoes": {"base": 5, "evolucao": 4}, "totalRCAs": 6},
     metasMes: "2026-10",
+    validades: null,
+    visaoCliente: false,
     beta: true,
     metas: {
       total: 53250,
@@ -451,6 +453,101 @@ nav button.sub svg{width:15px;height:15px}
 .chip.ok{background:var(--good-bg);color:var(--good);border-color:transparent}
 @media (max-width:820px){ nav button.sub{padding:7px 11px} }
 @media (max-width:560px){ .kpis3{grid-template-columns:1fr} .lch{flex-direction:column;gap:4px} .lcv{text-align:left} .lcv span{display:inline;margin-left:6px} }
+/* Visão do cliente (tela para mostrar ao cliente) */
+.vc-controls{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center}
+.vc-controls select{max-width:360px}
+.vc-actions{display:flex;gap:8px;flex-wrap:wrap;position:relative}
+.vc-menu{position:absolute;right:0;top:100%;margin-top:6px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:6px;z-index:20;min-width:230px;box-shadow:0 12px 30px rgba(0,0,0,.35)}
+.vc-menu button{display:block;width:100%;text-align:left;background:none;border:0;color:var(--ink);padding:9px 12px;border-radius:8px;cursor:pointer;font-size:13px}
+.vc-menu button:hover{background:var(--surface2)}
+.vc-hero{background:linear-gradient(135deg,var(--accent-soft),transparent 70%),var(--surface);border:1px solid var(--accent-line);border-radius:16px;padding:20px 22px}
+.vc-hero .for{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.vc-hero h1{margin:4px 0 8px;font-size:26px;letter-spacing:-.02em}
+.vc-hero p{margin:0;font-size:15px;line-height:1.5;color:var(--ink)}
+.vc-hero p b{color:var(--accent)}
+.vc-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.vc-kpi{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.vc-kpi .lab{font-size:13px;color:var(--muted)}
+.vc-kpi .val{font-size:28px;font-weight:750;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.15;margin:2px 0}
+.vc-kpi .cmp{font-size:12px;color:var(--muted);display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.vc-d{font-weight:700;font-size:12px;padding:2px 8px;border-radius:99px;white-space:nowrap}
+.vc-d.up{color:var(--good);background:var(--good-bg)} .vc-d.down{color:var(--bad);background:var(--bad-bg)} .vc-d.eq{color:var(--muted);background:var(--surface2)}
+.vc-chart svg{width:100%;height:auto;display:block}
+.vc-leg{display:flex;gap:16px;font-size:12px;color:var(--muted);margin-top:6px}
+.vc-leg i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.vc-fam{display:grid;grid-template-columns:130px 1fr 190px;gap:10px 14px;align-items:center}
+.vc-fam .nm{display:flex;align-items:center;gap:8px;font-weight:650}
+.vc-fam .nm i{width:10px;height:10px;border-radius:50%}
+.vc-fam .bars{display:flex;flex-direction:column;gap:4px}
+.vc-fam .bar{height:9px;border-radius:5px;background:var(--track);overflow:hidden}
+.vc-fam .bar span{display:block;height:100%;border-radius:5px}
+.vc-fam .nums{text-align:right;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.vc-fam .nums b{color:var(--ink);font-size:13px}
+.vc-2col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.vc-li{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-top:1px solid var(--line);font-size:13px}
+.vc-li:first-child{border-top:0}
+.vc-li .s{color:var(--muted);font-size:12px}
+.vc-foot{font-size:12px;color:var(--muted);text-align:center;padding:6px 0 0}
+.vc-toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:var(--accent);color:var(--accent-ink);padding:10px 16px;border-radius:99px;font-weight:650;font-size:13px;z-index:50}
+body.vc-apres .side{display:none} body.vc-apres .app{grid-template-columns:1fr} body.vc-apres .vc-controls,body.vc-apres .vc-nota{display:none}
+@media(max-width:900px){.vc-kpis,.vc-2col{grid-template-columns:1fr}.vc-fam{grid-template-columns:1fr}.vc-fam .nums{text-align:left}}
+.vc-kpis{grid-template-columns:repeat(3,1fr)}
+.vc-ins{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.vc-in{border-left:3px solid var(--line);background:var(--surface2);border-radius:10px;padding:10px 14px;display:flex;flex-direction:column;gap:2px;font-size:13px}
+.vc-in b{font-size:13.5px} .vc-in span{color:var(--muted)}
+.vc-in.up{border-left-color:var(--good)} .vc-in.down{border-left-color:var(--bad)}
+.vc-h{display:grid;grid-template-columns:minmax(120px,1.3fr) 1.4fr 130px;gap:12px;align-items:center;padding:7px 0;border-top:1px solid var(--line);font-size:13px}
+.vc-h:first-of-type{border-top:0}
+.vc-h .n{min-width:0;overflow:hidden;text-overflow:ellipsis} .vc-h .b{display:flex;flex-direction:column;gap:4px}
+.vc-h .bar,.vc-fam .bar{height:8px;border-radius:4px;background:var(--track);overflow:hidden}
+.vc-h .bar span{display:block;height:100%;border-radius:4px}
+.vc-h .v{text-align:right;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums} .vc-h .v b{color:var(--ink);font-size:13px}
+.vc-heat{display:grid;grid-template-columns:44px repeat(12,1fr);gap:4px;font-size:11px}
+.vc-heat .h{color:var(--muted);text-align:center} .vc-heat .h.y{text-align:right;padding-right:6px;align-self:center;font-weight:650}
+.vc-heat .c{height:34px;border-radius:6px;display:grid;place-items:center;color:var(--faint)} .vc-heat .vz{background:none}
+.vc-2col>.panel{min-width:0}
+@media(max-width:900px){.vc-ins{grid-template-columns:1fr}.vc-h{grid-template-columns:1fr}.vc-h .v{text-align:left}}
+.vc-hero.sm{padding:12px 18px}.vc-hero.sm h1{font-size:21px;margin:2px 0 4px}.vc-hero.sm p{font-size:13.5px}
+.vc-dash{display:grid;grid-template-columns:200px repeat(3,minmax(0,1fr));grid-template-rows:235px 225px 215px;gap:10px}
+.vc-dash .t{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-width:0;display:flex;flex-direction:column;gap:4px;overflow:hidden}
+.vc-dash .t h3{margin:0;font-size:12px;color:var(--muted);font-weight:650;text-align:center}
+.vc-dash .t svg{width:100%;height:100%;display:block;flex:1;min-height:0}
+.vc-dash .kcol{grid-column:1;grid-row:1/4;display:flex;flex-direction:column;gap:10px}
+.vc-dash .k{flex:1;justify-content:center;align-items:center;text-align:center}
+.vc-dash .k .big{font-size:26px;font-weight:750;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.1}
+.vc-dash .k .cmp{font-size:11.5px;color:var(--muted);display:flex;gap:6px;flex-wrap:wrap;justify-content:center;align-items:center}
+.vc-dash .b{grid-column:2;grid-row:1}.vc-dash .c{grid-column:3;grid-row:1}.vc-dash .d{grid-column:4;grid-row:1}.vc-dash .a{grid-column:2/5;grid-row:2}
+.vc-dash .e{grid-column:2/4;grid-row:3}.vc-dash .f{grid-column:4;grid-row:3}
+.vc-dash .mr{display:grid;grid-template-columns:minmax(60px,1fr) 1fr auto;gap:8px;align-items:center;font-size:11.5px;padding:2px 0}
+.vc-dash .mn{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:flex;align-items:center;gap:6px}.vc-dash .mn i{width:8px;height:8px;border-radius:50%;flex:none}
+.vc-dash .mb{display:flex;flex-direction:column;gap:3px}.vc-dash .mb .bar{height:6px;border-radius:3px;background:var(--track);overflow:hidden}.vc-dash .mb .bar span{display:block;height:100%;border-radius:3px}
+.vc-dash .mv{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink);font-weight:650;font-size:11.5px}
+@media(max-width:1000px){.vc-dash{grid-template-columns:1fr 1fr;grid-template-rows:none}.vc-dash .t{min-height:220px}.vc-dash .kcol{grid-column:1/3;grid-row:auto;flex-direction:row;flex-wrap:wrap}.vc-dash .k{flex:1 1 140px}.vc-dash .a,.vc-dash .b,.vc-dash .c,.vc-dash .d,.vc-dash .e,.vc-dash .f{grid-column:1/3;grid-row:auto}}
+.clk{cursor:pointer}.vc-dash .mr.clk:hover,.vc-leg .clk:hover{background:var(--surface2);border-radius:6px}
+.vc-dash .mr.sel,.vc-leg .sel{background:var(--accent-soft);outline:1px solid var(--accent);border-radius:6px}
+.vc-chips{display:flex;flex-wrap:wrap;gap:8px;align-items:center;min-height:30px}
+.vc-chip{background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent-line);border-radius:99px;padding:4px 12px;font-size:12px;font-weight:650;cursor:pointer}
+.vc-chip.lim{background:none;color:var(--muted);border-color:var(--line)}
+.vc-an tr.sel td{background:var(--accent-soft)} .vc-an th[data-k]{cursor:pointer} .vc-an td.neg{color:var(--bad)} .vc-an td.pos{color:var(--good)}
+@media print{.vc-chips,.vc-an .tools{display:none!important}}
+.vc-dash .k.clk:hover,.vc-kpi.clk:hover{border-color:var(--accent-line);background:var(--surface2)}.vc-dash .k.sel,.vc-kpi.sel{outline:1px solid var(--accent);border-color:var(--accent)}
+.vc-dg{display:grid;grid-template-columns:1fr 1fr;gap:12px}.vc-db{background:var(--surface2);border-radius:12px;padding:10px 14px;min-width:0}
+.vc-db h4{margin:0 0 4px;font-size:13px;display:flex;justify-content:space-between;gap:8px}.vc-db h4 span{color:var(--muted);font-weight:500}
+.vc-db.up h4{color:var(--good)}.vc-db.down h4{color:var(--bad)}.vc-db.up,.vc-db.down{color:var(--ink)}.vc-db.up .vr{color:var(--good)}.vc-db.down .vr{color:var(--bad)}.vc-db .vr .s{color:var(--muted)}
+.vc-db .vc-li{align-items:center}.vc-db .vc-li.clk:hover{background:var(--surface)}.vc-db .vc-li.sel{outline:1px solid var(--accent);border-radius:6px}
+.vc-db .vr{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums;font-weight:650}.vc-db .vr .s{font-weight:400}
+.vc-dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px}
+.vc-an tr.subl td{background:var(--surface2);font-size:.93em}.vc-sub{color:var(--muted);margin-left:14px}
+@media(max-width:900px){.vc-dg{grid-template-columns:1fr}}
+@media print{.vc-det .vc-chip{display:none!important}}
+.vc-kpis4{grid-template-columns:repeat(4,1fr)}.vc-fech .vc-kpis{margin:6px 0 10px}@media(max-width:900px){.vc-kpis4{grid-template-columns:1fr 1fr}}
+@media print{
+  :root,:root.tema-nv{--bg:#fff!important;--surface:#fff!important;--surface2:#f3f6f7!important;--line:#d5dcde!important;--track:#e6ebed!important;--ink:#111!important;--muted:#555!important;--accent:#0B7A66!important;--accent-soft:#e6f4f1!important;--accent-line:#9fd3c8!important;--good:#1a7f37!important;--good-bg:#e3f4e8!important;--bad:#c62828!important;--bad-bg:#fbe7e7!important}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .side,.vc-controls,.vc-actions,.vc-nota,.vc-toast{display:none!important}
+  .app{display:block!important} main{padding:0!important} body{background:#fff!important}
+  .vc-hero,.vc-kpi,.panel{break-inside:avoid}
+}
 </style>
 
 <div class="app">
@@ -749,6 +846,373 @@ nav button.sub svg{width:15px;height:15px}
   // gesto de rolar fora do quadro também fecha (mesmo quando a página cabe inteira na tela)
   ["wheel","touchmove"].forEach(ev=>window.addEventListener(ev, e=>{ if(!e.target.closest(".pop")) fechaPops(); }, {passive:true}));
 
+  // ---------- Validades: uma só validade por produto, a mais curta, e as unidades dela ----------
+  function drawValidades(){
+    const V = C.validades, hoje = new Date(); hoje.setHours(0,0,0,0);
+    const curto = f => f.split(" ")[0].replace(/[,.]$/,"");   // "VALLEE S/A" -> "VALLEE"
+    const itens = V.itens.map(([cod,nome,forn,iso,est])=>{ const d=new Date(iso+"T00:00:00"); return {cod,nome,forn:curto(forn),d,dias:Math.round((d-hoje)/86400000),est}; });
+    const cor = d => d<=90 ? "bad" : d<=180 ? "warn" : "good";
+    const fornecedores = ["Todos", ...new Set(itens.map(i=>i.forn))];
+    let ff = "Todos", q = "";
+    section(`
+      <div class="head"><div><div class="hello">Atualizado em ${new Date(V.atualizado+"T00:00:00").toLocaleDateString("pt-BR")}</div><h1>Validades</h1>
+        <div class="sub">Validade mais curta de cada produto e as unidades dela</div></div></div>
+      <div class="panel">
+        <div class="tools">
+          <div class="seg" id="vfor" role="group" aria-label="Fornecedor">${fornecedores.map((f,i)=>`<button data-f="${f}"${i?"":' class="on"'}>${f}</button>`).join("")}</div>
+          <input id="vbusca" type="search" placeholder="Buscar produto" style="flex:1;min-width:180px;padding:6px 10px;border-radius:99px;border:1px solid var(--line);background:var(--surface2);color:var(--ink)">
+        </div>
+        <div class="tbl"><table><thead><tr><th class="l">Produto</th><th>Validade</th><th>Unidades</th></tr></thead><tbody id="vbody"></tbody></table></div>
+      </div>`);
+    const draw = () => {
+      const l = itens.filter(i=>(ff==="Todos"||i.forn===ff) && (!q || i.nome.toUpperCase().includes(q)));
+      el("vbody").innerHTML = l.length ? l.map(i=>`<tr><td class="l nome">${i.nome}</td><td><span class="pill s-${cor(i.dias)}">${i.d.toLocaleDateString("pt-BR")}</span></td><td>${inteiro(i.est)}</td></tr>`).join("")
+        : `<tr><td colspan="3" class="empty">Nenhum produto nesse filtro.</td></tr>`;
+    };
+    el("vfor").addEventListener("click", e=>{ const b=e.target.closest("button"); if(!b) return; ff=b.dataset.f; el("vfor").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b)); draw(); });
+    el("vbusca").addEventListener("input", e=>{ q=e.target.value.trim().toUpperCase(); draw(); });
+    draw();
+  }
+
+  // ---------- Visão do cliente: tela para mostrar ao cliente (desempenho contra o mesmo período do ano passado) ----------
+  function drawVisaoCliente(opts){
+    const FAMS = [
+      {rot:"Bravecto", cor:"#5B9CF6", f:p=>prod(p,"BRAVECTO")},
+      {rot:"Nobivac",  cor:"#5FE0BF", f:p=>prod(p,"NOBIVAC")},
+      {rot:"Defenza",  cor:"#A78BFA", f:p=>prod(p,"DEFENZ")},
+      {rot:"Farma",    cor:"#F59E6B", f:p=>P.produtos[p][2]===1},
+      {rot:"IDEXX",    cor:"#F472B6", f:p=>forn(p,"IDEXX")},
+      {rot:"Outros",   cor:"#7F9490", f:()=>true}
+    ];
+    const famDe = P.produtos.map((_,p)=>FAMS.findIndex(x=>x.f(p)));
+    const fech = cur-1, anoF = +P.meses[fech].slice(0,4), iniAno = P.meses.findIndex(m=>+m.slice(0,4)===anoF);
+    const mkey = i => { if(P.meses[i]) return P.meses[i]; const [y0,m0]=P.meses[0].split("-").map(Number), t=y0*12+(m0-1)+i; return Math.floor(t/12)+"-"+String(t%12+1).padStart(2,"0"); };
+    const mNome = i => MES_NOME[+mkey(i).slice(5)-1], mAb = i => mNome(i).slice(0,3), cap = t => t[0].toUpperCase()+t.slice(1);
+    const MODOS = [
+      {id:"ano", rot:`Ano até hoje${corte?" ("+corte.toLocaleDateString("pt-BR").slice(0,5)+")":""}`, a:iniAno, b:cur},
+      {id:"tri", rot:`Último trimestre (${mAb(Math.max(fech-2,0))} a ${mAb(fech)})`, a:Math.max(fech-2,0), b:fech},
+      {id:"ano25", rot:`Ano fechado (${+anoF-1}: jan a dez)`, a:iniAno, b:iniAno+11}
+    ];
+    // mês aberto: no mesmo período do ano passado, o mês correspondente entra proporcional aos dias úteis já passados
+    const frCur = uteisMes>0 ? Math.min(uteisPassados/uteisMes,1) : 1, fAnt = m => (m===cur && modo.id!=="ano25") ? frCur : 1;
+    let modo = MODOS[0], met = "v", cli = null, visao = "res";
+    const fi = {fam:null, mes:null, prod:null}; let lin = "produto", ord = "a", dirv = -1, det = null, gro = 0;
+    const pass = l => (fi.fam===null||famDe[l[1]]===fi.fam) && (fi.prod===null||l[1]===fi.prod);
+    const base = []; for(let c=0;c<NC+GRUPOS.length;c++) if(soma(c,cur-12,cur)>0) base.push(c);
+    base.sort((x,y)=>soma(y,cur-12,cur)-soma(x,cur-12,cur));
+    cli = ok(opts.cli) ? opts.cli : (window.__vcCli!==undefined ? window.__vcCli : base[0]);
+    const R_ = v => v.toLocaleString("pt-BR",{style:"currency",currency:"BRL",maximumFractionDigits:0});
+    const U_ = v => Math.round(v).toLocaleString("pt-BR")+" un";
+    const F_ = v => met==="v" ? R_(v) : U_(v);
+    const AX = v => { const k=met==="v"?"R$ ":""; return v>=1000 ? k+(v/1000).toLocaleString("pt-BR",{maximumFractionDigits:v>=10000?0:1})+" mil" : k+Math.round(v); };
+    const delta = (a,b) => b>0 ? (a-b)/b : null;
+    const dHTML = (a,b,fmt) => { const d=delta(a,b);
+      if(d===null) return a>0 ? `<span class="vc-d up">novo</span>` : `<span class="vc-d eq">–</span>`;
+      const cl = Math.abs(d)<0.005 ? "eq" : d>0 ? "up" : "down";
+      return `<span class="vc-d ${cl}">${d>0?"▲":d<0?"▼":"="} ${d>=3?"×"+(a/b).toFixed(0):pct(Math.abs(d),0)}${fmt?` · ${d>0?"+":"−"}${fmt(Math.abs(a-b))}`:""}</span>`; };
+    const lblAno = i => mkey(i).slice(0,4);
+    const CV="var(--accent)", CP="var(--faint)";
+
+    // séries do cliente: valor e unidades por mês (todas as linhas)
+    const serie = c => { const V=new Float64Array(M+12), Q=new Float64Array(M+12), D=Array.from({length:M+12},()=>new Set());
+      linhasCli[c].forEach(l=>{ if(!pass(l)) return; V[l[2]]+=l[3]; Q[l[2]]+=l[4]; if(l[3]>0) D[l[2]].add(l[1]); }); return {V,Q,D}; };
+
+    const calc = (a=modo.a, b=modo.b) => {
+      const n=b-a+1, S=serie(cli), arr = met==="v" ? S.V : S.Q;
+      const r = {a,b,n,S,arr, ms:[], fam:FAMS.map(()=>({v:[0,0],q:[0,0],mes:Array(n).fill(0)})), pa:new Set(), pb:new Set(), prod:new Map(),
+                 tot:{v:[0,0],q:[0,0]}, mesesCom:[0,0]};
+      for(let m=a;m<=b;m++){ const va=arr[m], vb=m-12>=0?arr[m-12]:0; r.ms.push({m,a:va,b:vb*fAnt(m),bf:vb});
+        r.tot.v[0]+=S.V[m]; r.tot.q[0]+=S.Q[m]; if(m-12>=0){ r.tot.v[1]+=S.V[m-12]*fAnt(m); r.tot.q[1]+=S.Q[m-12]*fAnt(m); }
+        if(S.V[m]>0) r.mesesCom[0]++; if(m-12>=0 && S.V[m-12]>0) r.mesesCom[1]++; }
+      // filtros cruzados: a família não filtra a lista de famílias, e o produto não filtra a lista de produtos
+      linhasCli[cli].forEach(l=>{ const m=l[2], f=famDe[l[1]], okF=(fi.prod===null||l[1]===fi.prod), okP=(fi.fam===null||f===fi.fam), full=okF&&okP;
+        const cur_ = m>=a&&m<=b, ant_ = m>=a-12&&m<=b-12; if(!cur_&&!ant_) return;
+        if(okF){ const F=r.fam[f]; if(cur_){ F.v[0]+=l[3]; F.q[0]+=l[4]; F.mes[m-a]+=(met==="v"?l[3]:l[4]); } else { const k=fAnt(m+12); F.v[1]+=l[3]*k; F.q[1]+=l[4]*k; } }
+        if(okP){ const P_=r.prod.get(l[1])||(r.prod.set(l[1],{v:[0,0],q:[0,0]}),r.prod.get(l[1])); if(cur_){ P_.v[0]+=l[3]; P_.q[0]+=l[4]; } else { const k=fAnt(m+12); P_.v[1]+=l[3]*k; P_.q[1]+=l[4]*k; } }
+        if(full&&l[3]>0){ if(cur_) r.pa.add(l[1]); else r.pb.add(l[1]); } });
+      r.parcial = a<=cur && cur<=b && cur-12>=0 && modo.id!=="ano25";   // período inclui o mês aberto
+      if(a===cur && b===cur){ r.prop=frCur; r.full={v:S.V[cur-12]||0,q:S.Q[cur-12]||0}; }
+      return r;
+    };
+
+    // ----- gráficos (SVG) -----
+    let W=720;
+    const eixoY = (mx,H,pl,pt,pb) => [0,.5,1].map(f=>{ const v=mx*f, y=pt+(H-pt-pb)*(1-f); return `<line x1="${pl}" x2="${W-4}" y1="${y}" y2="${y}" stroke="var(--line)"/><text x="${pl-6}" y="${y+4}" text-anchor="end" font-size="10" fill="var(--muted)">${AX(v)}</text>`; }).join("");
+    const gBarras = (r,H=230,sel=null) => { const pl=58,pb=26,pt=12, gw=(W-pl-8)/r.ms.length, bw=Math.min(24,gw/2-3), mx=Math.max(1,...r.ms.map(x=>Math.max(x.a,x.b))), yy=v=>pt+(H-pt-pb)*(1-v/mx);
+      const bar=(x,v,cor,t,dim)=>v>0?`<rect x="${x}" y="${yy(v)}" width="${bw}" height="${H-pb-yy(v)}" rx="3" fill="${cor}" opacity="${dim?.3:1}"><title>${t}: ${F_(v)}</title></rect>`:"";
+      return `<svg viewBox="0 0 ${W} ${H}">${eixoY(mx,H,pl,pt,pb)}${r.ms.map((x,i)=>{ const cx=pl+gw*i+gw/2, dim=sel!==null&&sel!==x.m;
+        return `<g data-mes="${x.m}" class="clk">`+`<rect x="${cx-gw/2}" y="0" width="${gw}" height="${H}" fill="transparent"/>`+bar(cx-bw-1,x.b,CP,mAb(Math.max(x.m-12,0))+"/"+lblAno(Math.max(x.m-12,0)).slice(2),dim)+bar(cx+1,x.a,CV,mAb(x.m)+"/"+lblAno(x.m).slice(2),dim)+`<text x="${cx}" y="${H-8}" text-anchor="middle" font-size="11" fill="${sel===x.m?"var(--accent)":"var(--muted)"}" font-weight="${sel===x.m?700:400}">${mAb(x.m)}</text></g>`; }).join("")}</svg>`; };
+    const gLinhas = (series, rotulos, H=230, area=true) => { const pl=58,pb=26,pt=12, n=rotulos.length, dx=(W-pl-14)/Math.max(n-1,1);
+      const mx=Math.max(1,...series.flatMap(s=>s.pts.filter(ok))), yy=v=>pt+(H-pt-pb)*(1-v/mx), xx=i=>pl+6+dx*i;
+      const path = s => s.pts.map((v,i)=>ok(v)?`${i&&ok(s.pts[i-1])?"L":"M"}${xx(i).toFixed(1)},${yy(v).toFixed(1)}`:"").join(" ");
+      const passo = Math.ceil(n/12);
+      return `<svg viewBox="0 0 ${W} ${H}">${eixoY(mx,H,pl,pt,pb)}${series.map(s=>`${area&&s.area?`<path d="${path(s)} L${xx(s.pts.reduce((q,v,i)=>ok(v)?i:q,0))},${H-pb} L${xx(s.pts.findIndex(ok))},${H-pb}Z" fill="${s.cor}" opacity=".12"/>`:""}<path d="${path(s)}" fill="none" stroke="${s.cor}" stroke-width="${s.w||2.2}" ${s.dash?'stroke-dasharray="5 4"':""} stroke-linejoin="round"/>${s.pontos?s.pts.map((v,i)=>ok(v)?`<circle cx="${xx(i)}" cy="${yy(v)}" r="3" fill="${s.cor}"><title>${rotulos[i]}: ${s.fmt?s.fmt(v):F_(v)}</title></circle>`:"").join(""):""}`).join("")}
+        ${rotulos.map((t,i)=>i%passo===0?`<text x="${xx(i)}" y="${H-8}" text-anchor="middle" font-size="10" fill="var(--muted)">${t}</text>`:"").join("")}</svg>`; };
+    const gDiverg = (itens, H=210, sel=null) => { // itens: {rot, v (fração ou null)}
+      const pl=10,pb=26,pt=22, n=itens.length, gw=(W-pl-10)/n, bw=Math.min(30,gw-8), vs=itens.map(i=>ok(i.v)?Math.max(-1,Math.min(i.v,2)):0), mx=Math.max(.2,...vs.map(Math.abs)), z=pt+(H-pt-pb)/2, esc_=(H-pt-pb)/2/mx;
+      return `<svg viewBox="0 0 ${W} ${H}"><line x1="${pl}" x2="${W-6}" y1="${z}" y2="${z}" stroke="var(--line)"/>${itens.map((it,i)=>{ const cx=pl+gw*i+gw/2, v=vs[i], h=Math.abs(v)*esc_, y=v>=0?z-h:z;
+        const cor=!ok(it.v)?"var(--muted)":it.v>=0?"var(--good)":"var(--bad)";
+        const txt=!ok(it.v)?(it.novo?"novo":"–"):(it.v>=3?"×"+(it.v+1).toFixed(0):(it.v>=0?"+":"−")+Math.round(Math.abs(it.v)*100)+"%");
+        return `<g ${it.m!==undefined?`data-mes="${it.m}" class="clk"`:""} opacity="${sel!==null&&it.m!==undefined&&sel!==it.m?.35:1}"><rect x="${cx-gw/2}" y="0" width="${gw}" height="${H}" fill="transparent"/>`+(ok(it.v)?`<rect x="${cx-bw/2}" y="${y}" width="${bw}" height="${Math.max(h,1)}" rx="3" fill="${cor}" opacity=".85"><title>${it.rot}: ${txt}</title></rect>`:"")
+         +`<text x="${cx}" y="${ok(it.v)?(v>=0?y-4:y+h+11):z-5}" text-anchor="middle" font-size="10.5" font-weight="650" fill="${cor}">${txt}</text><text x="${cx}" y="${H-8}" text-anchor="middle" font-size="11" fill="var(--muted)">${it.rot}</text></g>`; }).join("")}</svg>`; };
+    const gRosca = (vals, idx) => { const tot=vals.reduce((s,v)=>s+Math.max(v,0),0); if(!(tot>0)) return `<div class="empty">sem compras</div>`;
+      let ang=-Math.PI/2; const R=62,r0=40,cx=75,cy=75, p=(rr,t)=>`${(cx+rr*Math.cos(t)).toFixed(2)},${(cy+rr*Math.sin(t)).toFixed(2)}`;
+      return `<svg viewBox="0 0 150 150" style="max-width:200px;margin:auto">${vals.map((v,i)=>{ if(!(v>0)) return ""; const a=v/tot*Math.PI*2, a2=ang+Math.min(a,Math.PI*2-.0001), big=a>Math.PI?1:0, d=`M${p(R,ang)} A${R},${R} 0 ${big} 1 ${p(R,a2)} L${p(r0,a2)} A${r0},${r0} 0 ${big} 0 ${p(r0,ang)}Z`; ang=a2;
+        const fx=idx?idx[i]:i; return `<path d="${d}" fill="${FAMS[fx].cor}" class="clk" data-fam="${fx}" opacity="${fi.fam!==null&&fi.fam!==fx?.3:1}"><title>${FAMS[fx].rot}: ${F_(v)} (${pct(v/tot,0)})</title></path>`; }).join("")}<text x="75" y="72" text-anchor="middle" font-size="9" fill="var(--muted)">Total</text><text x="75" y="86" text-anchor="middle" font-size="11" font-weight="700" fill="var(--ink)">${AX(tot)}</text></svg>`; };
+    const gAnel = (p, rot) => { const R=46, c=2*Math.PI*R, f=Math.max(0,Math.min(p,1.5)), cor=p>=1?"var(--good)":p>=.8?"var(--warn)":"var(--bad)";
+      return `<svg viewBox="0 0 130 130" style="max-width:170px;margin:auto"><circle cx="65" cy="65" r="${R}" fill="none" stroke="var(--track)" stroke-width="14"/><circle cx="65" cy="65" r="${R}" fill="none" stroke="${cor}" stroke-width="14" stroke-linecap="round" stroke-dasharray="${(Math.min(f,1)*c).toFixed(1)} ${c.toFixed(1)}" transform="rotate(-90 65 65)"/><text x="65" y="63" text-anchor="middle" font-size="22" font-weight="750" fill="var(--ink)">${Math.round(p*100)}%</text><text x="65" y="80" text-anchor="middle" font-size="9" fill="var(--muted)">${rot}</text></svg>`; };
+    const gEmpilhado = r => { const H=230,pl=58,pb=26,pt=12,n=r.n, gw=(W-pl-8)/n, bw=Math.min(40,gw-10);
+      const tot=Array.from({length:n},(_,i)=>r.fam.reduce((s,f)=>s+Math.max(f.mes[i],0),0)), mx=Math.max(1,...tot), yy=v=>pt+(H-pt-pb)*(1-v/mx);
+      return `<svg viewBox="0 0 ${W} ${H}">${eixoY(mx,H,pl,pt,pb)}${tot.map((t,i)=>{ const cx=pl+gw*i+gw/2; let acc=0;
+        return r.fam.map((f,k)=>{ const v=Math.max(f.mes[i],0); if(!(v>0)) return ""; const y1=yy(acc+v), h=yy(acc)-y1; acc+=v;
+          return `<rect x="${cx-bw/2}" y="${y1}" width="${bw}" height="${Math.max(h,0)}" fill="${FAMS[k].cor}"><title>${FAMS[k].rot} · ${mAb(r.a+i)}: ${F_(v)}</title></rect>`; }).join("")
+          +`<text x="${cx}" y="${H-8}" text-anchor="middle" font-size="11" fill="var(--muted)">${mAb(r.a+i)}</text>`; }).join("")}</svg>`; };
+    const heat = S => { const arr=met==="v"?S.V:S.Q, anos=[...new Set(P.meses.map(m=>m.slice(0,4)))], mx=Math.max(1,...arr);
+      return `<div class="vc-heat"><div></div>${MES_NOME.map(m=>`<div class="h">${m.slice(0,3)}</div>`).join("")}${anos.map(a=>`<div class="h y">${a}</div>`+MES_NOME.map((_,k)=>{ const i=P.meses.indexOf(a+"-"+String(k+1).padStart(2,"0")); if(i<0||i>cur) return `<div class="c vz"></div>`;
+        const v=arr[i], par=i===cur; return `<div class="c" style="background:${v>0?`color-mix(in srgb,var(--accent) ${Math.round(18+v/mx*78)}%,transparent)`:"var(--surface2)"};${par?"outline:1px dashed var(--accent);":""}" title="${mNome(i)}/${a}${par?" (em andamento)":""}: ${v>0?F_(v):"sem compra"}">${v>0?"":"–"}</div>`; }).join("")).join("")}</div>`; };
+
+    const resumoTxt = r => {
+      const d=delta(r.tot.v[0],r.tot.v[1]), du=delta(r.tot.q[0],r.tot.q[1]), per = r.n===1 ? `${mNome(r.a)} de ${lblAno(r.a)}` : `${mNome(r.a)} a ${mNome(r.b)} de ${lblAno(r.a)}`;
+      const L=[`📊 ${nomeDe(cli)}`, `${per} × mesmo período de ${+lblAno(r.a)-1}`, ``,
+        `Valor: ${R_(r.tot.v[0])} (${d===null?"sem base":(d>=0?"▲ ":"▼ ")+pct(Math.abs(d),0)+" vs "+R_(r.tot.v[1])})`,
+        `Unidades: ${U_(r.tot.q[0])} (${du===null?"sem base":(du>=0?"▲ ":"▼ ")+pct(Math.abs(du),0)+" vs "+U_(r.tot.q[1])})`,
+        `Produtos diferentes: ${r.pa.size} (antes: ${r.pb.size})`, ``];
+      FAMS.forEach((f,i)=>{ const x=r.fam[i].v[0], y=r.fam[i].v[1]; if(x>0||y>0){ const dd=delta(x,y); L.push(`• ${f.rot}: ${R_(x)} ${dd===null?(x>0?"(novo)":""):(dd>=0?"▲ ":"▼ ")+pct(Math.abs(dd),0)}`); } });
+      L.push(``,`Consultor: ${C.vendedor} · NovaVet`); return L.join("\n"); };
+    const toast = t => { const e=document.createElement("div"); e.className="vc-toast"; e.textContent=t; document.body.appendChild(e); setTimeout(()=>e.remove(),2200); };
+
+    section(`
+      <div class="head vc-controls">
+        <div><div class="hello">Para mostrar ao cliente</div><h1>Visão do cliente</h1></div>
+        <div class="vc-actions">
+          <button class="btn sm" id="vcapres" aria-pressed="false">Modo apresentação</button>
+          <button class="btn" id="vcshare">Compartilhar ▾</button>
+          <div class="vc-menu" id="vcmenu" hidden>
+            <button data-a="wpp">Enviar resumo pelo WhatsApp</button><button data-a="copia">Copiar resumo</button><button data-a="pdf">Imprimir / salvar em PDF</button>
+          </div>
+        </div>
+      </div>
+      <div class="panel tools vc-controls" style="margin:0">
+        <span class="mini">Cliente:</span>
+        <select id="vccli" aria-label="Escolher cliente">${base.map(c=>`<option value="${c}"${c===cli?" selected":""}>${esc(nomeDe(c))}${ehGrupo(c)?" (grupo)":""}</option>`).join("")}</select>
+        <span class="mini">Período:</span><div class="seg" id="vcper">${MODOS.map((m,i)=>`<button data-i="${i}"${i?"":' class="on"'}>${m.rot}</button>`).join("")}</div>
+        <span class="mini">Visão:</span><div class="seg" id="vcvis"><button data-v="res" class="on">Resumida</button><button data-v="full">Completa</button></div>
+        <span class="mini">Mostrar em:</span><div class="seg" id="vcmet"><button data-m="v" class="on">Valor (R$)</button><button data-m="q">Unidades</button></div>
+      </div>
+      <div id="vcbody" style="display:contents"></div>`);
+
+    // analítico dentro da visão: mesma consulta, respeitando os filtros clicados
+    const anTab = () => {
+      const useSel = fi.mes!==null && lin!=="mes", a = useSel?fi.mes:modo.a, b = useSel?fi.mes:modo.b;
+      const mp = new Map(); let tA=0, tB=0;
+      const get = k => mp.get(k)||(mp.set(k,{k,a:0,b:0}),mp.get(k));
+      linhasCli[cli].forEach(l=>{ if(!pass(l)) return; const m=l[2], v=met==="v"?l[3]:l[4], inA=m>=a&&m<=b, inB=m>=a-12&&m<=b-12; if(!inA&&!inB) return;
+        const o = get(lin==="produto"?"p"+l[1]:lin==="familia"?"f"+famDe[l[1]]:"m"+(inA?m:m+12)); if(inA){ o.a+=v; tA+=v; } else { const k=fAnt(m+12); o.b+=v*k; tB+=v*k; } });
+      if(lin==="mes") for(let m=a;m<=b;m++) get("m"+m);
+      const rows=[...mp.values()].map(o=>({...o, idx:+o.k.slice(1), nome: lin==="produto"?P.produtos[+o.k.slice(1)][0] : lin==="familia"?FAMS[+o.k.slice(1)].rot : cap(mNome(+o.k.slice(1)))+"/"+lblAno(+o.k.slice(1)).slice(2), dif:o.a-o.b, pc:delta(o.a,o.b), sh:tA>0?o.a/tA:0}))
+        .filter(o=>lin==="mes"||o.a!==0||o.b!==0);
+      const val = o => ord==="nome"?o.nome : ord==="idx"?o.idx : (o[ord]??-Infinity);
+      rows.sort((x,y)=>{ const p=val(x), q=val(y); return dirv*(typeof p==="string"?p.localeCompare(q):p-q); });
+      if(lin==="familia" && fi.fam!==null){   // família escolhida: abre os produtos dela logo abaixo
+        const pm=new Map(); linhasCli[cli].forEach(l=>{ if(!pass(l)) return; const m=l[2], v=met==="v"?l[3]:l[4], inA=m>=a&&m<=b, inB=m>=a-12&&m<=b-12; if(!inA&&!inB) return;
+          const o=pm.get(l[1])||(pm.set(l[1],{k:"p"+l[1],a:0,b:0}),pm.get(l[1])); if(inA) o.a+=v; else o.b+=v*fAnt(m+12); });
+        const sub=[...pm.values()].map(o=>({...o,nome:P.produtos[+o.k.slice(1)][0],dif:o.a-o.b,pc:delta(o.a,o.b),sh:tA>0?o.a/tA:0})).filter(o=>o.a!==0||o.b!==0).sort((x,y)=>y.a-x.a);
+        rows.forEach(o=>{ if(+o.k.slice(1)===fi.fam) o.sub=sub; });
+      }
+      return {rows,tA,tB,a,b};
+    };
+    const draw = () => {
+      const rFull=calc(), r=(visao==="res" && fi.mes!==null) ? calc(fi.mes,fi.mes) : rFull, nome=nomeDe(cli), anoA=lblAno(r.a), anoB=+anoA-1, S=r.S, tv=r.tot.v, tq=r.tot.q, mt_=r.tot[met];
+      const d=delta(tv[0],tv[1]), du=delta(tq[0],tq[1]);
+      const per0 = r.n===1 ? `${mNome(r.a)} de ${anoA}` : `${mNome(r.a)} a ${mNome(r.b)} de ${anoA}`;
+      const ft=[fi.fam!==null?FAMS[fi.fam].rot:null, fi.prod!==null?P.produtos[fi.prod][0]:null].filter(Boolean).join(" · "), per=per0+(ft?` (${ft})`:"");
+      const nota = r.parcial ? ` <span style="color:var(--muted);font-size:13px">(${MES_NOME[mes-1]} ainda está aberto: em ${anoB} ele entra só até o mesmo dia útil)</span>` : "";
+      const vezes = x => Math.floor(x);
+      const A25 = modo.id==="ano25";
+      const base25 = r.tot[met][1], real25 = r.tot[met][0], alvo25 = base25*(1+gro/100), falta25 = Math.max(alvo25-real25,0), remN = 12-mes, remNomes = [...Array(remN)].map((_,k)=>mNome(cur+1+k));
+      const mediaAtual = real25/Math.max(mes-1+frCur,1), porMes = remN>0 ? falta25/remN : falta25;
+      const frase25 = `Em ${anoA} você já comprou <b>${R_(tv[0])}</b> (${U_(tq[0])}) até ${corte?corte.toLocaleDateString("pt-BR").slice(0,5):"hoje"}, <b>${tv[1]>0?pct(tv[0]/tv[1],0):"–"}</b> de tudo que comprou em ${anoB} (${R_(tv[1])}). ${tv[0]>=tv[1]*(1+gro/100)?`<b>Já ${gro?"passou "+gro+"% acima de":"superou"} ${anoB}.</b>`:`Para fechar o ano ${gro?gro+"% acima de":"empatando com"} ${anoB}, ainda faltam <b>${R_(Math.max(tv[1]*(1+gro/100)-tv[0],0))}</b>.`}`;
+      const frase = A25 ? frase25 : d===null ? (tv[0]>0 ? `Em ${per}, você comprou <b>${R_(tv[0])}</b> (${U_(tq[0])}). No mesmo período de ${anoB} não houve compras.` : `Sem compras em ${per}.`)
+        : `Em ${per}, você comprou <b>${R_(tv[0])}</b>: <b>${d>=3?"mais de "+vezes(tv[0]/tv[1])+" vezes o valor":pct(Math.abs(d),0)+" "+(d>=0?"a mais":"a menos")}</b> que no mesmo período de ${anoB} (${R_(tv[1])}). Em unidades foram <b>${U_(tq[0])}</b>${du===null?"":`, ${du>=3?"×"+(tq[0]/tq[1]).toFixed(0):pct(Math.abs(du),0)+" "+(du>=0?"a mais":"a menos")}`}.${nota}`;
+      // famílias
+      const fl = FAMS.map((f,i)=>({f,i,x:r.fam[i][met][0],y:r.fam[i][met][1]})).filter(o=>o.x>0||o.y>0).sort((p,q)=>q.x-p.x), mxF=Math.max(1,...fl.map(o=>Math.max(o.x,o.y)));
+      // produtos
+      const pl_ = [...r.prod].map(([p,o])=>({p,x:o[met][0],y:o[met][1]})), top=pl_.filter(o=>o.x>0).sort((a,b)=>b.x-a.x).slice(0,10), mxP=Math.max(1,...top.map(o=>Math.max(o.x,o.y)));
+      const var_ = pl_.map(o=>({...o,dl:o.x-o.y})), altas=var_.filter(o=>o.dl>0).sort((a,b)=>b.dl-a.dl).slice(0,5), quedas=var_.filter(o=>o.dl<0).sort((a,b)=>a.dl-b.dl).slice(0,5), mxD=Math.max(1,...[...altas,...quedas].map(o=>Math.abs(o.dl)));
+      // oportunidades
+      const nao = FAMS.slice(0,5).map((f,i)=>({f,i})).filter(o=>{ let t=0; linhasCli[cli].forEach(l=>{ if(l[2]>=cur-12&&l[2]<=cur&&l[3]>0&&famDe[l[1]]===o.i) t+=l[3]; }); return t===0; })
+        .map(o=>{ const cnt=new Map(); P.vendas.forEach(l=>{ if(l[2]>=cur-12&&l[2]<=cur&&l[3]>0&&famDe[l[1]]===o.i&&isJ(l[0])){ if(!cnt.has(l[1])) cnt.set(l[1],new Set()); cnt.get(l[1]).add(l[0]); } });
+          const tp=[...cnt].sort((p,q)=>q[1].size-p[1].size).slice(0,3).map(([p])=>P.produtos[p][0]); return {...o,tp,tot:new Set([].concat(...[...cnt.values()].map(s=>[...s]))).size}; }).filter(o=>o.tp.length);
+      const volta = [...r.prod].map(([p,o])=>({p,x:o.v[0],y:o.v[1]})).filter(o=>o.x<o.y*.5).sort((a,b)=>(b.y-b.x)-(a.y-a.x)).slice(0,6);
+      // séries
+      const mesesOK=[...Array(fech+1).keys()], ev=mesesOK.map(i=>r.arr[i]), mm=ev.map((_,i)=>i>=2?(ev[i]+ev[i-1]+ev[i-2])/3:null);
+      let ca=0,cb=0; const msC=r.ms.filter(x=>x.m<=cur), cumA=msC.map(x=>ca+=x.a), cumB=msC.map(x=>cb+=x.b);
+      const msAte=rFull.ms.filter(x=>x.m<=cur), yoy=msAte.map(x=>{ const bb=(modo.id==="ano25"&&x.m===cur)?x.bf*frCur:x.b; return {rot:mAb(x.m), m:x.m, v:delta(x.a,bb), novo:x.a>0&&!(bb>0)}; });
+      const mom=r.ms.filter(x=>x.m<=cur).map(x=>({rot:mAb(x.m), v:x.m>=1?delta(x.a,r.arr[x.m-1]):null, novo:x.m>=1&&x.a>0&&!(r.arr[x.m-1]>0)}));
+      const dif=mesesOK.map(i=>S.D[i].size);
+      // destaques
+      const e12=[...Array(12).keys()].map(k=>cur-12+k).filter(i=>i>=0&&i<=fech), melhor=e12.reduce((b,i)=>S.V[i]>(S.V[b]??-1)?i:b,e12[0]), mCom12=e12.filter(i=>S.V[i]>0).length;
+      const fc=fl.map(o=>({...o,dl:o.x-o.y})), subiu=[...fc].sort((a,b)=>b.dl-a.dl)[0], caiu=[...fc].sort((a,b)=>a.dl-b.dl)[0];
+      const ins=[];
+      ins.push([d===null?"eq":d>=0?"up":"down", d===null?"Sem base no ano passado":d>=0?"Você comprou mais":"Você comprou menos", d===null?`${R_(tv[0])} no período`:`${pct(Math.abs(d),0)} ${d>=0?"acima":"abaixo"} de ${anoB}: ${R_(Math.abs(tv[0]-tv[1]))} de diferença em valor`]);
+      ins.push([du===null?"eq":du>=0?"up":"down","Em unidades",du===null?`${U_(tq[0])} no período`:`${U_(tq[0])}, ${du>=0?"+":"−"}${U_(Math.abs(tq[0]-tq[1]))} em relação a ${anoB}`]);
+      if(subiu&&subiu.dl>0) ins.push(["up","Família que mais cresceu",`${subiu.f.rot}: +${F_(subiu.dl)} contra ${anoB}`]);
+      if(caiu&&caiu.dl<0) ins.push(["down","Família que mais caiu",`${caiu.f.rot}: −${F_(Math.abs(caiu.dl))} contra ${anoB}`]);
+      ins.push(["eq","Melhor mês (12 meses)",`${cap(mNome(melhor))}/${lblAno(melhor).slice(2)} com ${R_(S.V[melhor])}`]);
+      ins.push(["eq","Regularidade",`Comprou em ${mCom12} dos últimos ${e12.length} meses fechados`]);
+      const novos=[...r.pa].filter(p=>!r.pb.has(p)).length; ins.push([novos>0?"up":"eq","Produtos novos",novos>0?`${novos} produto${novos>1?"s":""} que não comprou no mesmo período de ${anoB}`:`Nenhum produto novo em relação a ${anoB}`]);
+
+      let fechHTML = "";
+      if(A25){
+        const arrM = r.arr, i0 = cur-iniAno; let c5=0,c6=0; const cum25=[], cum26=[], need=[];
+        for(let i=0;i<12;i++){ c5+=arrM[iniAno+i-12]||0; cum25.push(c5); if(iniAno+i<=cur){ c6+=arrM[iniAno+i]||0; cum26.push(c6); } else cum26.push(null); }
+        for(let i=0;i<12;i++) need.push(i>=i0 && i0<11 ? cum26[i0]+(alvo25-cum26[i0])*(i-i0)/(11-i0) : null);
+        fechHTML = `<div class="panel vc-fech"><div class="ph"><h2>Fechar ${anoA} em crescimento</h2><span class="tag">contra ${anoB} inteiro (jan a dez) · ${met==="v"?"valor":"unidades"}</span></div>
+          <div class="tools"><span class="mini">Quero fechar o ano:</span><div class="seg" id="vcgro">${[[0,"igualando "+anoB],[5,"+5%"],[10,"+10%"],[15,"+15%"],[20,"+20%"]].map(([g,t])=>`<button data-gro="${g}"${g===gro?' class="on"':""}>${t}</button>`).join("")}</div></div>
+          <div class="vc-kpis vc-kpis4">
+            <div class="vc-kpi"><div class="lab">Já comprou em ${anoA}</div><div class="val">${F_(real25)}</div><div class="cmp"><span class="vc-d ${real25>=base25?"up":"eq"}">${base25>0?pct(real25/base25,0):"–"} de ${anoB}</span></div></div>
+            <div class="vc-kpi"><div class="lab">${anoB} inteiro</div><div class="val">${F_(base25)}</div><div class="cmp"><span>meta: ${F_(alvo25)}</span></div></div>
+            <div class="vc-kpi"><div class="lab">Falta para ${gro?"crescer "+gro+"%":"igualar"}</div><div class="val" style="color:${falta25>0?"var(--warn)":"var(--good)"}">${falta25>0?F_(falta25):"Meta batida"}</div><div class="cmp"><span>${falta25>0?"até dezembro":"já passou de "+anoB}</span></div></div>
+            <div class="vc-kpi"><div class="lab">${remN>0?"Por mês até dezembro":"Mês final"}</div><div class="val">${falta25>0?F_(porMes):"–"}</div><div class="cmp"><span>${remN>0?`em ${remNomes.join(" e ")}`:"sem meses restantes"} · hoje ${F_(mediaAtual)}/mês</span></div></div>
+          </div>
+          <div class="vc-chart">${gLinhas([{pts:cum25,cor:CP,dash:true},{pts:cum26,cor:CV,area:true,pontos:true},{pts:need,cor:"var(--warn)",dash:true,w:2.4}], MES_NOME.map(m=>m.slice(0,3)))}</div>
+          <div class="vc-leg"><span><i style="background:${CP}"></i>${anoB} acumulado</span><span><i style="background:${CV}"></i>${anoA} acumulado</span><span><i style="background:var(--warn)"></i>caminho até a meta</span></div></div>`;
+      }
+      const chips = `<div class="vc-chips">${fi.fam!==null?`<button class="vc-chip" data-clr="fam">Família: ${FAMS[fi.fam].rot} ✕</button>`:""}${fi.mes!==null?`<button class="vc-chip" data-clr="mes">Mês: ${mAb(fi.mes)}/${lblAno(fi.mes).slice(2)} ✕</button>`:""}${fi.prod!==null?`<button class="vc-chip" data-clr="prod">Produto: ${esc(P.produtos[fi.prod][0])} ✕</button>`:""}
+        ${fi.fam!==null||fi.mes!==null||fi.prod!==null?`<button class="vc-chip lim" data-clr="all">Limpar filtros</button>`:`<span class="mini">Clique em um mês, uma família ou um produto para filtrar tudo.</span>`}</div>`;
+      const an = anTab(), seta = k => ord===k ? (dirv>0?" ▲":" ▼") : "";
+      const perAB = (a_,b_) => a_===b_ ? mAb(a_)+"/"+lblAno(a_).slice(2) : mAb(a_)+" a "+mAb(b_)+"/"+lblAno(a_).slice(2);
+      const dfm = v => (v>0?"+":v<0?"−":"")+F_(Math.abs(v));
+      const anHTML = `<div class="panel vc-an"><div class="ph"><h2>Analítico</h2><span class="tag">clique na linha para filtrar · clique no título da coluna para ordenar</span></div>
+        <div class="tools"><span class="mini">Linhas por:</span><div class="seg" id="vclin">${[["produto","Produto"],["familia","Família"],["mes","Mês"]].map(([k,t])=>`<button data-lin="${k}"${k===lin?' class="on"':""}>${t}</button>`).join("")}</div>
+          <button class="btn sm" data-cp="1" style="margin-left:auto">${ICON.copiar} Copiar para o Excel</button></div>
+        <div class="tbl"><table><thead><tr><th class="l" data-k="nome">${{produto:"Produto",familia:"Família",mes:"Mês"}[lin]}${seta("nome")}</th><th data-k="b">${perAB(an.a-12,an.b-12)}${seta("b")}</th><th data-k="a">${perAB(an.a,an.b)}${seta("a")}</th><th data-k="dif">Diferença${seta("dif")}</th><th data-k="pc">%${seta("pc")}</th><th data-k="sh">% do total${seta("sh")}</th></tr></thead>
+        <tbody>${an.rows.length ? an.rows.map(o=>{ const at = lin==="produto"?`data-prod="${o.k.slice(1)}"`:lin==="familia"?`data-fam="${o.k.slice(1)}"`:`data-mes="${o.k.slice(1)}"`, sel = (lin==="produto"&&fi.prod===+o.k.slice(1))||(lin==="familia"&&fi.fam===+o.k.slice(1))||(lin==="mes"&&fi.mes===+o.k.slice(1));
+          const lh = (o,cl,at_,nm) => `<tr class="click${cl}" ${at_}><td class="l nome">${nm}</td><td>${F_(o.b)}</td><td><b>${F_(o.a)}</b></td><td class="${o.dif<0?"neg":o.dif>0?"pos":""}">${dfm(o.dif)}</td><td>${o.pc===null?(o.a>0?"novo":"–"):(o.pc>0?"+":"")+pct(o.pc,0)}</td><td>${pct(o.sh,0)}</td></tr>`;
+          return lh(o,sel?" sel":"",at,esc(o.nome)) + (o.sub ? o.sub.map(x=>lh(x," subl",`data-prod="${x.k.slice(1)}"`,`<span class="vc-sub">↳</span> ${esc(x.nome)}`)).join("") : ""); }).join("") : `<tr><td colspan="6" class="empty">Nenhuma compra com esses filtros.</td></tr>`}</tbody>
+        <tfoot><tr><td class="l">Total</td><td>${F_(an.tB)}</td><td>${F_(an.tA)}</td><td class="${an.tA-an.tB<0?"neg":"pos"}">${dfm(an.tA-an.tB)}</td><td>${an.tB>0?(an.tA>an.tB?"+":"")+pct(an.tA/an.tB-1,0):"–"}</td><td>100%</td></tr></tfoot></table></div></div>`;
+      draw.an = an;
+      const pd=[...r.prod].map(([p,o])=>({p,vx:o.v[0],vy:o.v[1],qx:o.q[0],qy:o.q[1]})), nm_=o=>esc(P.produtos[o.p][0]);
+      const li=(o,dir,dt)=>`<div class="vc-li clk${fi.prod===o.p?" sel":""}" data-prod="${o.p}"><div>${nm_(o)}</div><div class="vr">${dt}</div></div>`;
+      const box=(tit,cl,arr,fn)=>`<div class="vc-db ${cl}"><h4>${tit} <span>${arr.length}</span></h4>${arr.length?arr.slice(0,8).map(fn).join("")+(arr.length>8?`<div class="s" style="padding:6px 0">+ ${arr.length-8} produtos (veja no analítico)</div>`:""):`<div class="s" style="padding:8px 0">Nenhum.</div>`}</div>`;
+      const novos_=pd.filter(o=>o.vx>0&&!(o.vy>0)).sort((a,b)=>b.vx-a.vx), pararam_=pd.filter(o=>o.vy>0&&!(o.vx>0)).sort((a,b)=>b.vy-a.vy),
+            caindo=pd.filter(o=>o.vx>0&&o.vy>0&&o.vx<o.vy).sort((a,b)=>(b.vy-b.vx)-(a.vy-a.vx)), crescendo=pd.filter(o=>o.vx>0&&o.vy>0&&o.vx>o.vy).sort((a,b)=>(b.vx-b.vy)-(a.vx-a.vy));
+      const detHTML = det==="prod" ? `<div class="panel vc-det"><div class="ph"><h2>Produtos diferentes: ${r.pa.size} agora, ${r.pb.size} em ${anoB}</h2><button class="vc-chip lim" data-det="prod">Fechar ✕</button></div>
+          <div class="vc-dg">${box("O que pegou de novo","up",novos_,o=>li(o,0,`${R_(o.vx)} · ${U_(o.qx)}`))}${box("Deixou de comprar","down",pararam_,o=>li(o,0,`antes ${R_(o.vy)} · ${U_(o.qy)}`))}
+          ${box("Onde está caindo","down",caindo,o=>li(o,0,`${R_(o.vx)} <span class="s">era ${R_(o.vy)} · ${pct((o.vx-o.vy)/o.vy,0)}</span>`))}${box("Onde está crescendo","up",crescendo,o=>li(o,0,`${R_(o.vx)} <span class="s">era ${R_(o.vy)} · +${pct((o.vx-o.vy)/o.vy,0)}</span>`))}</div></div>`
+        : det==="und" ? `<div class="panel vc-det"><div class="ph"><h2>Unidades: ${U_(tq[0])} agora, ${U_(tq[1])} em ${anoB}</h2><button class="vc-chip lim" data-det="und">Fechar ✕</button></div>
+          <div class="vc-dg">${box("Onde as unidades subiram","up",pd.filter(o=>o.qx>o.qy).sort((a,b)=>(b.qx-b.qy)-(a.qx-a.qy)),o=>li(o,0,`+${U_(o.qx-o.qy)} <span class="s">${U_(o.qx)} · era ${U_(o.qy)}</span>`))}
+          ${box("Onde estão caindo","down",pd.filter(o=>o.qx<o.qy).sort((a,b)=>(a.qx-a.qy)-(b.qx-b.qy)),o=>li(o,0,`−${U_(o.qy-o.qx)} <span class="s">${U_(o.qx)} · era ${U_(o.qy)}</span>`))}
+          <div class="vc-db"><h4>Por família <span>unidades</span></h4>${fl.map(o=>{ const fq=r.fam[o.i].q; return `<div class="vc-li clk${fi.fam===o.i?" sel":""}" data-fam="${o.i}"><div><i class="vc-dot" style="background:${o.f.cor}"></i>${o.f.rot}</div><div class="vr">${U_(fq[0])} <span class="s">era ${U_(fq[1])}</span> ${dHTML(fq[0],fq[1])}</div></div>`; }).join("")}</div></div></div>` : "";
+      if(visao==="res"){
+        const W0=W; W=760; const gb=gBarras(rFull,185,fi.mes); W=500; const gd=gDiverg(yoy,150,fi.mes); W=W0;
+        const ating = tv[1]>0 ? tv[0]/tv[1] : null, atingQ = tq[1]>0 ? tq[0]/tq[1] : null, alvo = met==="v" ? ating : atingQ;
+        const top5 = top.slice(0,5), mx5=Math.max(1,...top5.map(o=>Math.max(o.x,o.y)));
+        const leg = fl.map(o=>`<span class="clk${fi.fam===o.i?" sel":""}" data-fam="${o.i}"><i style="background:${o.f.cor}"></i>${o.f.rot}</span>`).join("");
+        el("vcbody").innerHTML = `
+          <div class="vc-hero sm"><div class="for">Desempenho de</div><h1>${esc(nome)}</h1><p>${frase}</p></div>
+          ${chips}
+          ${fechHTML}
+          <div class="vc-dash">
+            <div class="kcol">
+              <div class="t k"><h3>Total comprado</h3><div class="big">${R_(tv[0])}</div><div class="cmp">${dHTML(tv[0],tv[1])} <span>vs ano passado</span></div></div>
+              <div class="t k"><h3>Mesmo período de ${anoB}</h3><div class="big">${R_(tv[1])}</div><div class="cmp"><span>${per.replace(anoA,anoB)}</span></div></div>
+              <div class="t k clk${det==="und"?" sel":""}" data-det="und" title="Clique para ver onde subiu e onde caiu"><h3>Unidades ▾</h3><div class="big">${U_(tq[0])}</div><div class="cmp">${dHTML(tq[0],tq[1])} <span>vs ${U_(tq[1])}</span></div></div>
+              <div class="t k clk${det==="prod"?" sel":""}" data-det="prod" title="Clique para ver o que é novo e o que caiu"><h3>Produtos diferentes ▾</h3><div class="big">${r.pa.size}</div><div class="cmp">${dHTML(r.pa.size,r.pb.size)} <span>vs ${r.pb.size}</span></div></div>
+              <div class="t k"><h3>Meses com compra</h3><div class="big">${r.n>1?r.mesesCom[0]+" de "+r.n:mCom12+" de "+e12.length}</div><div class="cmp"><span>${r.n>1?"vs "+r.mesesCom[1]+" em "+anoB:"últimos 12 meses"}</span></div></div>
+            </div>
+            <div class="t a"><h3>Compras mês a mês · ${met==="v"?"valor":"unidades"} · ${anoA} × ${anoB}</h3>${gb}<div class="vc-leg" style="justify-content:center"><span><i style="background:${CV}"></i>${anoA}</span><span><i style="background:${CP}"></i>${anoB}</span>${rFull.parcial?`<span>· ${mAb(cur)}/${String(anoB).slice(2)} só até o mesmo dia útil</span>`:""}</div></div>
+            <div class="t b"><h3>Por família · ${anoA} × ${anoB}</h3>${fl.length ? fl.map(o=>`<div class="mr clk${fi.fam===o.i?" sel":""}" data-fam="${o.i}"><div class="mn"><i style="background:${o.f.cor}"></i>${o.f.rot}</div><div class="mb"><div class="bar"><span style="width:${o.x/mxF*100}%;background:${o.f.cor}"></span></div><div class="bar"><span style="width:${o.y/mxF*100}%;background:var(--faint)"></span></div></div><div class="mv">${F_(o.x)}<br>${dHTML(o.x,o.y)}</div></div>`).join("") : `<div class="empty">Sem compras.</div>`}</div>
+            <div class="t c"><h3>Onde estão as compras</h3>${gRosca(fl.map(o=>o.x),fl.map(o=>o.i))}<div class="vc-leg" style="flex-wrap:wrap;justify-content:center;gap:4px 10px">${leg}</div></div>
+            <div class="t d"><h3>Atingimento contra ${anoB}</h3>${ating===null?`<div class="empty">sem base</div>`:gAnel(alvo,met==="v"?"em valor":"em unidades")}<div class="cmp" style="justify-content:center;margin-top:4px"><span>${F_(met==="v"?tv[0]:tq[0])} de ${F_(met==="v"?tv[1]:tq[1])}</span></div></div>
+            <div class="t e"><h3>Crescimento contra o mesmo mês de ${anoB}</h3>${gd}</div>
+            <div class="t f"><h3>Produtos mais comprados</h3>${top5.length ? top5.map(o=>`<div class="mr clk${fi.prod===o.p?" sel":""}" data-prod="${o.p}"><div class="mn" title="${esc(P.produtos[o.p][0])}">${esc(P.produtos[o.p][0])}</div><div class="mb"><div class="bar"><span style="width:${o.x/mx5*100}%;background:${CV}"></span></div><div class="bar"><span style="width:${o.y/mx5*100}%;background:${CP}"></span></div></div><div class="mv">${F_(o.x)}</div></div>`).join("") : `<div class="empty">Sem compras.</div>`}</div>
+          </div>
+          ${detHTML}
+          ${anHTML}
+          <div class="vc-foot">Seu consultor: ${esc(C.vendedor)} · NovaVet · dados até ${corte?corte.toLocaleDateString("pt-BR"):"hoje"}</div>`;
+        draw.r = r; return;
+      }
+      el("vcbody").innerHTML = `
+        <div class="vc-hero"><div class="for">Desempenho de</div><h1>${esc(nome)}</h1><p>${frase}</p></div>${chips}${fechHTML}
+        <div class="vc-kpis">
+          <div class="vc-kpi"><div class="lab">Total comprado</div><div class="val">${R_(tv[0])}</div><div class="cmp">${dHTML(tv[0],tv[1],R_)} <span>vs ${R_(tv[1])} em ${anoB}</span></div></div>
+          <div class="vc-kpi clk${det==="und"?" sel":""}" data-det="und"><div class="lab">Unidades ▾</div><div class="val">${U_(tq[0])}</div><div class="cmp">${dHTML(tq[0],tq[1],U_)} <span>vs ${U_(tq[1])} em ${anoB}</span></div></div>
+          <div class="vc-kpi clk${det==="prod"?" sel":""}" data-det="prod"><div class="lab">Produtos diferentes ▾</div><div class="val">${r.pa.size}</div><div class="cmp">${dHTML(r.pa.size,r.pb.size)} <span>vs ${r.pb.size} em ${anoB}</span></div></div>
+          ${r.prop ? `<div class="vc-kpi"><div class="lab">${cap(MES_NOME[mes-1])} de ${anoB} (mês inteiro)</div><div class="val">${R_(r.full.v)}</div><div class="cmp"><span class="vc-d ${tv[0]>=r.full.v?"up":"eq"}">${tv[0]>=r.full.v?"já superou":pct(r.full.v>0?tv[0]/r.full.v:0,0)+" alcançado"}</span> <span>dados até ${corte?corte.toLocaleDateString("pt-BR").slice(0,5):"hoje"}</span></div></div>`
+            : `<div class="vc-kpi"><div class="lab">Média por mês</div><div class="val">${R_(tv[0]/r.n)}</div><div class="cmp">${dHTML(tv[0]/r.n,tv[1]/r.n)} <span>vs ${R_(tv[1]/r.n)}</span></div></div>`}
+          <div class="vc-kpi"><div class="lab">Melhor mês (12 meses)</div><div class="val">${cap(mAb(melhor))}/${lblAno(melhor).slice(2)}</div><div class="cmp"><span>${R_(S.V[melhor])}</span></div></div>
+          <div class="vc-kpi"><div class="lab">Meses com compra</div><div class="val">${r.n>1?r.mesesCom[0]+" de "+r.n:mCom12+" de "+e12.length}</div><div class="cmp">${r.n>1?`<span>vs ${r.mesesCom[1]} de ${r.n} em ${anoB}</span>`:"<span>nos últimos 12 meses fechados</span>"}</div></div>
+        </div>
+        ${detHTML}
+        <div class="panel"><div class="ph"><h2>Resumo em poucas palavras</h2></div><div class="vc-ins">${ins.map(([c,t,s])=>`<div class="vc-in ${c}"><b>${t}</b><span>${s}</span></div>`).join("")}</div></div>
+        <div class="panel"><div class="ph"><h2>Mês a mês: ${anoA} contra ${anoB} · ${met==="v"?"valor":"unidades"}</h2></div><div class="vc-chart">${gBarras(r)}</div>
+          <div class="vc-leg"><span><i style="background:${CV}"></i>${anoA}</span><span><i style="background:${CP}"></i>${anoB}</span></div></div>
+        ${r.n>1 ? `<div class="panel"><div class="ph"><h2>Acompanhamento acumulado no período</h2><span class="tag">soma mês a mês, ${anoA} contra ${anoB}</span></div><div class="vc-chart">${gLinhas([{pts:cumB,cor:CP,dash:true},{pts:cumA,cor:CV,area:true,pontos:true}], msC.map(x=>mAb(x.m)))}</div>
+          <div class="vc-leg"><span><i style="background:${CV}"></i>${anoA}</span><span><i style="background:${CP}"></i>${anoB}</span></div></div>` : ""}
+        <div class="panel"><div class="ph"><h2>Variação contra o mesmo mês de ${anoB}</h2><span class="tag">verde: comprou mais · vermelho: comprou menos</span></div><div class="vc-chart">${gDiverg(yoy)}</div></div>
+        <div class="panel"><div class="ph"><h2>Variação contra o mês anterior</h2><span class="tag">ritmo mês a mês</span></div><div class="vc-chart">${gDiverg(mom)}</div></div>
+        <div class="panel"><div class="ph"><h2>Evolução desde ${mAb(0)}/${lblAno(0).slice(2)}</h2><span class="tag">linha tracejada: média dos últimos 3 meses</span></div>
+          <div class="vc-chart">${gLinhas([{pts:ev,cor:CV,area:true,pontos:true},{pts:mm,cor:"var(--warn)",dash:true,w:2}], mesesOK.map(i=>mAb(i)+"/"+lblAno(i).slice(2)))}</div></div>
+        <div class="panel"><div class="ph"><h2>Calendário de compras</h2><span class="tag">quanto mais forte a cor, maior a compra do mês</span></div>${heat(S)}</div>
+        <div class="vc-2col">
+          <div class="panel"><div class="ph"><h2>Onde estão as compras · ${anoA}</h2></div>${gRosca(fl.map(o=>o.x),fl.map(o=>o.i))}<div class="vc-leg" style="flex-wrap:wrap">${fl.map(o=>`<span><i style="background:${o.f.cor}"></i>${o.f.rot}</span>`).join("")}</div></div>
+          <div class="panel"><div class="ph"><h2>Onde estavam · ${anoB}</h2></div>${gRosca(fl.map(o=>o.y),fl.map(o=>o.i))}<div class="vc-leg" style="flex-wrap:wrap">${fl.map(o=>`<span><i style="background:${o.f.cor}"></i>${o.f.rot}</span>`).join("")}</div></div>
+        </div>
+        <div class="panel"><div class="ph"><h2>Por família: ${anoA} contra ${anoB} · ${met==="v"?"valor":"unidades"}</h2></div>
+          <div class="vc-fam">${fl.length ? fl.map(o=>`<div class="nm"><i style="background:${o.f.cor}"></i>${o.f.rot}</div>
+            <div class="bars"><div class="bar"><span style="width:${o.x/mxF*100}%;background:${o.f.cor}"></span></div><div class="bar"><span style="width:${o.y/mxF*100}%;background:var(--faint)"></span></div></div>
+            <div class="nums"><b>${F_(o.x)}</b> <span>(${anoB}: ${F_(o.y)})</span><br>${dHTML(o.x,o.y)}</div>`).join("") : `<div class="empty" style="grid-column:1/-1">Sem compras no período.</div>`}</div>
+          <div class="vc-leg"><span><i style="background:${CV}"></i>${anoA}</span><span><i style="background:${CP}"></i>${anoB}</span></div></div>
+        ${r.n>1 ? `<div class="panel"><div class="ph"><h2>Famílias mês a mês · ${met==="v"?"valor":"unidades"}</h2></div><div class="vc-chart">${gEmpilhado(r)}</div><div class="vc-leg" style="flex-wrap:wrap">${FAMS.map(f=>`<span><i style="background:${f.cor}"></i>${f.rot}</span>`).join("")}</div></div>` : ""}
+        <div class="panel"><div class="ph"><h2>Produtos mais comprados</h2><span class="tag">${met==="v"?"valor":"unidades"} · ${anoA} contra ${anoB}</span></div>
+          ${top.length ? top.map(o=>`<div class="vc-h"><div class="n">${esc(P.produtos[o.p][0])}</div><div class="b"><div class="bar"><span style="width:${o.x/mxP*100}%;background:${CV}"></span></div><div class="bar"><span style="width:${o.y/mxP*100}%;background:${CP}"></span></div></div><div class="v"><b>${F_(o.x)}</b><br><span>${anoB}: ${F_(o.y)}</span></div></div>`).join("") : `<div class="empty">Sem compras no período.</div>`}</div>
+        <div class="vc-2col">
+          <div class="panel"><div class="ph"><h2>O que mais subiu</h2></div>${altas.length ? altas.map(o=>`<div class="vc-h"><div class="n">${esc(P.produtos[o.p][0])}</div><div class="b"><div class="bar"><span style="width:${o.dl/mxD*100}%;background:var(--good)"></span></div></div><div class="v"><b style="color:var(--good)">+${F_(o.dl)}</b></div></div>`).join("") : `<div class="empty">Nada subiu.</div>`}</div>
+          <div class="panel"><div class="ph"><h2>O que mais caiu</h2></div>${quedas.length ? quedas.map(o=>`<div class="vc-h"><div class="n">${esc(P.produtos[o.p][0])}</div><div class="b"><div class="bar"><span style="width:${Math.abs(o.dl)/mxD*100}%;background:var(--bad)"></span></div></div><div class="v"><b style="color:var(--bad)">−${F_(Math.abs(o.dl))}</b></div></div>`).join("") : `<div class="empty">Nada caiu.</div>`}</div>
+        </div>
+        <div class="panel"><div class="ph"><h2>Variedade de produtos por mês</h2><span class="tag">quantos produtos diferentes foram comprados</span></div>
+          <div class="vc-chart">${gLinhas([{pts:dif,cor:"#A78BFA",area:true,pontos:true,fmt:v=>v+" produtos"}], mesesOK.map(i=>mAb(i)+"/"+lblAno(i).slice(2)), 200)}</div></div>
+        <div class="vc-2col">
+          <div class="panel"><div class="ph"><h2>Oportunidades para você</h2></div>
+            ${nao.length ? nao.map(o=>`<div class="vc-li"><div><b>${o.f.rot}</b><div class="s">${o.tot} clientes da carteira compram. Mais vendidos: ${o.tp.map(esc).join(" · ")}</div></div></div>`).join("") : `<div class="empty">Você já compra em todas as famílias.</div>`}</div>
+          <div class="panel"><div class="ph"><h2>Que tal comprar de novo?</h2></div>
+            ${volta.length ? volta.map(o=>`<div class="vc-li"><div>${esc(P.produtos[o.p][0])}<div class="s">${o.x>0?`comprou ${R_(o.y)} em ${anoB} e agora ${R_(o.x)}`:`comprou ${R_(o.y)} em ${anoB} e ainda não repetiu`}</div></div></div>`).join("") : `<div class="empty">Tudo que comprou em ${anoB} já foi repetido.</div>`}</div>
+        </div>
+        ${anHTML}
+        <div class="vc-foot">Seu consultor: ${esc(C.vendedor)} · NovaVet · dados até ${corte?corte.toLocaleDateString("pt-BR"):"hoje"}</div>`;
+      draw.r = r;
+    };
+    el("vccli").addEventListener("change", e=>{ fi.fam=fi.mes=fi.prod=null; det=null; cli=+e.target.value; window.__vcCli=cli; draw(); });
+    el("vcper").addEventListener("click", e=>{ const b=e.target.closest("button"); if(!b) return; modo=MODOS[+b.dataset.i]; fi.mes=null; el("vcper").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b)); draw(); });
+    el("vcvis").addEventListener("click", e=>{ const b=e.target.closest("button"); if(!b) return; visao=b.dataset.v; el("vcvis").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b)); draw(); });
+    el("vcbody").addEventListener("click", e=>{
+      const t = e.target.closest("[data-gro],[data-det],[data-clr],[data-mes],[data-fam],[data-prod],[data-lin],[data-k],[data-cp]"); if(!t) return;
+      const tog = (k,v) => { fi[k] = fi[k]===v ? null : v; };
+      if(t.dataset.gro!==undefined){ gro=+t.dataset.gro; draw(); return; }
+      if(t.dataset.det){ det = det===t.dataset.det ? null : t.dataset.det; draw(); if(det){ const d_=document.querySelector(".vc-det"); d_&&d_.scrollIntoView({behavior:"smooth",block:"nearest"}); } return; }
+      if(t.dataset.clr){ if(t.dataset.clr==="all"){ fi.fam=fi.mes=fi.prod=null; } else fi[t.dataset.clr]=null; }
+      else if(t.dataset.mes!==undefined){ const m=+t.dataset.mes; if(m>=modo.a && m<=modo.b) tog("mes",m); }
+      else if(t.dataset.fam!==undefined) tog("fam",+t.dataset.fam);
+      else if(t.dataset.prod!==undefined) tog("prod",+t.dataset.prod);
+      else if(t.dataset.lin){ lin=t.dataset.lin; ord = lin==="mes" ? "idx" : "a"; dirv = lin==="mes" ? 1 : -1; }
+      else if(t.dataset.k){ const k=t.dataset.k; if(ord===k) dirv*=-1; else { ord=k; dirv = k==="nome"?1:-1; } }
+      else if(t.dataset.cp){ const an=draw.an, f=v=>typeof v==="number"?String(Math.round(v*100)/100).replace(".",","):String(v);
+        const L=[["Linha",perAB0(an.a-12,an.b-12),perAB0(an.a,an.b),"Diferença","%"],...an.rows.map(o=>[o.nome,o.b,o.a,o.dif,o.pc===null?"":pct(o.pc,1)]),["Total",an.tB,an.tA,an.tA-an.tB,an.tB>0?pct(an.tA/an.tB-1,1):""]];
+        navigator.clipboard.writeText(L.map(l=>l.map(f).join("\t")).join("\n")).then(()=>toast("Copiado. Cole no Excel"),()=>toast("Não consegui copiar")); return; }
+      draw(); });
+    const perAB0 = (a_,b_) => a_===b_ ? mAb(a_)+"/"+lblAno(a_).slice(2) : mAb(a_)+" a "+mAb(b_)+"/"+lblAno(a_).slice(2);
+    el("vcmet").addEventListener("click", e=>{ const b=e.target.closest("button"); if(!b) return; met=b.dataset.m; el("vcmet").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b)); draw(); });
+    el("vcapres").addEventListener("click", ()=>{ document.body.classList.toggle("vc-apres"); const on=document.body.classList.contains("vc-apres"); el("vcapres").setAttribute("aria-pressed",on); el("vcapres").textContent = on?"Sair da apresentação":"Modo apresentação"; });
+    el("vcshare").addEventListener("click", e=>{ e.stopPropagation(); el("vcmenu").hidden = !el("vcmenu").hidden; });
+    document.addEventListener("click", ()=>{ const m=el("vcmenu"); if(m) m.hidden=true; });
+    el("vcmenu").addEventListener("click", async e=>{ const b=e.target.closest("button"); if(!b) return; const t=resumoTxt(draw.r);
+      if(b.dataset.a==="wpp") window.open("https://wa.me/?text="+encodeURIComponent(t),"_blank","noopener");
+      else if(b.dataset.a==="copia"){ try{ await navigator.clipboard.writeText(t); toast("Resumo copiado"); }catch(err){ toast("Não consegui copiar"); } }
+      else window.print(); });
+    draw();
+  }
+
   // ---------- Navegação (sidebar) ----------
   // Para criar uma seção nova: acrescente um item aqui com id, rótulo e a função que desenha.
   const SECOES = [
@@ -756,10 +1220,12 @@ nav button.sub svg{width:15px;height:15px}
     ...(C.beta ? [{id:"plano", ic:"calendario", rot:"Plano do mês", draw:drawPlano}] : []),
     {id:"oport",     ic:"alvo",     rot:"Oportunidades",         draw:drawOport},
     {id:"clientes",  ic:"pessoas",  rot:"Clientes",              draw:drawClientes, cnt:()=>NC},
+    ...(C.visaoCliente ? [{id:"visao", ic:"estrela", rot:"Visão do cliente", draw:drawVisaoCliente}] : []),
     {id:"produtos",  ic:"box",      rot:"Produtos",              draw:drawProdutos},
     {id:"semcompra", ic:"local",    rot:"Sem compra no mês",     draw:drawSem, cnt:()=>semLista("todos").filter(isJ).length},
     {id:"analitico", ic:"tabela",   rot:"Analítico",             draw:drawAnalitico},
     {id:"conquistas",ic:"trofeu",   rot:"Conquistas",            draw:drawConquistas, cnt: novosRec>0 ? ()=>"★ "+novosRec : null},
+    ...(C.validades ? [{id:"validades", ic:"calendario", rot:"Validades", draw:drawValidades}] : []),
   ];
   let atual = null, clienteSel = null, prodFiltro = "";
   function ir(id, opts){
