@@ -51,6 +51,7 @@ const CONFIG = {
     mesRef: "2026-11",
     dataCorte: "2026-11-05",
     feriados: ["2026-11-02", "2026-11-20"],
+    lyMesmoPeriodo: 13779.0,
     posicaoRanking: 4,
     totalRCAs: 6,
     rankingFamilias: {"Bravecto": 5, "Nobivac": 3, "Defenza": 6, "Farma": 1, "IDEXX": 4},
@@ -163,6 +164,7 @@ h2{margin:0;font-size:15px;font-weight:650;color:var(--ink)}
 .kpi .val small{font-size:15px;color:var(--muted);font-weight:600}
 .kpi .det{font-size:12px;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 6px;align-items:center}
 .kpi .spark{margin-top:auto;padding-top:6px}
+.kpi .ly2{display:flex;gap:8px;margin-top:8px}.kpi .ly2>div{flex:1;background:rgba(127,127,127,.12);border-radius:8px;padding:6px 9px;min-width:0}.kpi .ly2 small{display:block;font-size:10.5px;color:var(--muted);letter-spacing:.04em}.kpi .ly2 b{font-size:14px;font-weight:600}.kpi .ly2 span{display:block;font-size:11px;color:var(--muted)}
 .kpi .spark svg{width:100%;height:46px;display:block}
 .up{color:var(--good)} .down{color:var(--bad)}
 .pill{display:inline-block;font-size:11px;font-weight:650;padding:2px 8px;border-radius:99px;white-space:nowrap}
@@ -1277,7 +1279,10 @@ body.vc-apres .side{display:none} body.vc-apres .app{grid-template-columns:1fr} 
     const tot = mt("total"), pos = mt("pos");
     const lyIdx = cur-12, totMes = m => P.vendas.reduce((s,r)=>r[2]===m?s+r[3]:s,0);
     const ly = lyIdx>=0 ? totMes(lyIdx) : null;
-    const varLy = ok(ly)&&ly>0&&tot.real>0 ? tot.real/ly-1 : null;   // mês novo sem venda: sem comparação
+    const lyY = (C.lyMesmoPeriodo===undefined||C.lyMesmoPeriodo===null) ? null : C.lyMesmoPeriodo;   // mesmos dias corridos do ano passado
+    const varLy = ok(lyY)&&lyY>0&&tot.real>0 ? tot.real/lyY-1 : (lyY===null&&ok(ly)&&ly>0&&tot.real>0 ? tot.real/ly-1 : null);
+    const atingLy = ok(ly)&&ly>0&&tot.real>0 ? tot.real/ly : null;
+    const diaCorte = corte ? String(corte.getDate()).padStart(2,"0") : "";   // mês novo sem venda: sem comparação
     const falta = ok(tot.meta) ? Math.max(tot.meta-tot.real,0) : null;
     const porDia = ok(falta)&&uteisRestantes>0 ? falta/uteisRestantes : null;
     const faltaPos = ok(pos.meta) ? Math.max(pos.meta-pos.real,0) : null;
@@ -1370,7 +1375,7 @@ body.vc-apres .side{display:none} body.vc-apres .app{grid-template-columns:1fr} 
         ${ok(C.posicaoRanking)&&C.posicaoRanking<=3?`<div class="rankpill">${ICON.trofeu}<span class="big">${C.posicaoRanking}º</span> lugar na equipe</div>`:""}
       </div>
       <section class="kpis">
-        ${kpi("Vendido no mês","cifrao",brl0(tot.real),`${seta(varLy)} contra ${lyIdx>=0?mesCurto(P.meses[lyIdx]):"ano passado"}`,`<div class="spark">${spark(serieVenda,"sg1")}</div>`)}
+        ${C.visaoCliente ? kpi("Vendido no mês","cifrao",brl0(tot.real),`${seta(varLy)} contra ${lyIdx>=0?(ok(lyY)&&diaCorte?`01 a ${diaCorte}/${mesCurto(P.meses[lyIdx])}`:mesCurto(P.meses[lyIdx])):"ano passado"}`,`${lyIdx>=0?`<div class="ly2"><div><small>YTD ${mesCurto(P.meses[lyIdx])}</small><b>${ok(lyY)?brl0(lyY):"–"}</b></div><div><small>MÊS ${mesCurto(P.meses[lyIdx])}</small><b>${ok(ly)?brl0(ly):"–"}</b><span>${ok(atingLy)?pct(atingLy)+" atingido":""}</span></div></div>`:""}`) : kpi("Vendido no mês","cifrao",brl0(tot.real),`${seta(varLy)} contra ${lyIdx>=0?mesCurto(P.meses[lyIdx]):"ano passado"}`,`<div class="spark">${spark(serieVenda,"sg1")}</div>`)}
         ${kpi("Meta total","alvo",pct(tot.p),`<span class="pill s-${tot.st}">${statusTxt[tot.st]}</span> ritmo esperado ${pct(ritmo,0)}`,`<div class="bar" style="margin-top:auto"><div class="fill ${tot.st}" style="width:${Math.min(tot.p||0,1)*100}%"></div>${ok(ritmo)?`<div class="mark" style="left:calc(${ritmo*100}% - 1px)"></div>`:""}</div><div class="det" style="margin-top:6px">${ok(tot.meta)?`${brl0(tot.real)} de ${brl0(tot.meta)}`:"meta do mês ainda não carregada"}</div>`)}
         ${kpi("Preciso vender por dia útil","calendario",!ok(tot.meta)?"sem meta":falta>0?brl0(porDia):"Meta batida",!ok(tot.meta)?"Meta do mês ainda não carregada":falta>0?`Falta ${brl0(falta)} em ${uteisRestantes} dias úteis`:"Tudo que vier agora é extra",`<div class="daysbar" title="${uteisPassados} de ${uteisMes} dias úteis">${dias}</div>`)}
         ${kpi("Clientes positivados","pessoas",`${pos.real} <small>de ${ok(pos.meta)?pos.meta:"–"}</small>`,faltaPos>0?`Faltam ${faltaPos} · <button class="linkbtn" data-go="semcompra">ver quem visitar</button>`:`<span class="${ok(pos.meta)?"up":""}">${ok(pos.meta)?"Meta batida":"sem meta"}</span>${ok(posLy)?` · ${posLy} em ${mesCurto(P.meses[lyIdx])}`:""}`,`<div class="spark">${spark(seriePos,"sg2")}</div>`)}
